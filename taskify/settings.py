@@ -41,7 +41,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'task_management.urls'
+ROOT_URLCONF = 'taskify.urls'
 
 TEMPLATES = [
     {
@@ -59,7 +59,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'task_management.wsgi.application'
+WSGI_APPLICATION = 'taskify.wsgi.application'
 
 INTERNAL_IPS = [
     # ...
