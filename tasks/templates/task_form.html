@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block content %}
+{{navbar}}
+    <div class="container mx-auto px-6 py-8">
+        <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="bg-blue-600 text-white py-4 px-6">
+                <h2 class="text-2xl font-bold">Add New Task</h2>
+                <p class="mt-1">Create a new task for your project</p>
+            </div>
+            <form method="post" class='py-6 px-8'>
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+                
+                {% for field in task_form %}
+                    <div class="mb-4">
+                        <label for="{{ field.id_for_label }}" class="{{ task_form.label_classes }}">{{ field.label }}</label>
+                        {{ field }}
+                        {{ field.errors }}
+                    </div>
+                {% endfor %}
+                {% for field in task_detail_form %}
+                    <div class="mb-4">
+                        <label for="{{ field.id_for_label }}" class="{{ task_detail_form.label_classes }}">{{ field.label }}</label>
+                        {{ field }}
+                        {{ field.errors }}
+                    </div>
+                {% endfor %}
+                
+                <div class="flex items-center justify-between">
+                    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 transition duration-300">Add Task</button>
+                    <button type="button" class="text-gray-600 hover:text-gray-800">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock content %}
+

@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from users.forms import RegistrationForm
+from users.forms import RegistrationForm, LoginForm
 from django.contrib.auth import authenticate, login, logout
 
 
@@ -15,19 +15,17 @@ def register_user(request):
 
 
 def login_user(request):
+    form = LoginForm()
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        print("Doc", username, password)
-        user = authenticate(request, username=username, password=password)
-        print(user)
-        if user is not None:
+        form = LoginForm(request, data=request.POST)
+        if form.is_valid():
+            user = form.get_user()
             login(request, user)
             return redirect('home')
-    return render(request, 'registration/login.html')
+    return render(request, 'registration/login.html', {'form': form})
 
 
 def logout_user(request):
     if request.method == 'POST':
         logout(request)
-        return redirect('sign-in')
+        return redirect('login')
