@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock title %}</title>
-    <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <link rel="stylesheet" href="{% static 'css/output.css' %}"> 
 </head>
 <body class="font-sans bg-gray-100">
     {% if user.is_authenticated %}
@@ -57,11 +57,27 @@
             </div>
         </div>
     </footer>
-
+    <script>
+        var isAuthenticated = {% if user.is_authenticated %} true {% else %} false {% endif %};
+    </script>
+    
     <script>
         document.getElementById('menu-toggle').addEventListener('click', function() {
             document.getElementById('mobile-menu').classList.toggle('hidden');
         });
+    
+        if (isAuthenticated) {
+            document.getElementById('user-menu-button').addEventListener('click', function() {
+                document.getElementById('user-menu').classList.toggle('hidden');
+            });
+    
+            // Close the dropdown when clicking outside
+            window.addEventListener('click', function(e) {
+                if (!document.getElementById('user-menu-button').contains(e.target)) {
+                    document.getElementById('user-menu').classList.add('hidden');
+                }
+            });
+        }
     </script>
 </body>
 </html>

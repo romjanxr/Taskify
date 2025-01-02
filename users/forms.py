@@ -1,8 +1,10 @@
 import re
 from django import forms
-from tasks.forms import StyledFormMixin
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm
+from core.mixins import StyledFormMixin
+from django.contrib.auth import authenticate
+from django.contrib.auth.models import Group, Permission
 
 
 class RegistrationForm(StyledFormMixin, forms.ModelForm):
@@ -64,3 +66,48 @@ class RegistrationForm(StyledFormMixin, forms.ModelForm):
 class LoginForm(StyledFormMixin, AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    # def clean(self):
+    #     username = self.cleaned_data.get("username")
+    #     password = self.cleaned_data.get("password")
+
+    #     if username is not None and password:
+    #         self.user_cache = authenticate(
+    #             self.request, username=username, password=password
+    #         )
+    #         user_temp = None
+    #         if self.user_cache is None:
+    #             try:
+    #                 chk_user = User.objects.get(username=username)
+    #                 if chk_user.check_password(password):
+    #                     user_temp = chk_user
+    #             except:
+    #                 user_temp = None
+
+    #         if user_temp is None:
+    #             raise self.get_invalid_login_error()
+    #         else:
+    #             self.confirm_login_allowed(user_temp)
+
+    #     return self.cleaned_data
+
+
+class AssignRoleForm(StyledFormMixin, forms.Form):
+    """ Form to assign role for admin """
+    role = forms.ModelChoiceField(
+        queryset=Group.objects.all(),
+        empty_label='Select a Role',
+    )
+
+
+class CreateGroupForm(StyledFormMixin, forms.ModelForm):
+    permissions = forms.ModelMultipleChoiceField(
+        queryset=Permission.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label='Assign Permission'
+    )
+
+    class Meta:
+        model = Group
+        fields = ['name', 'permissions']

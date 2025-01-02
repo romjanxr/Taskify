@@ -36,7 +36,7 @@ def manager_dashboard(request):
         "tasks": tasks,
         "counts": counts
     }
-    return render(request, "dashboard/manager-dashboard.html", context)
+    return render(request, "dashboard/manager_dashboard.html", context)
 
 
 def user_dashboard(request):
