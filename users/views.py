@@ -6,6 +6,9 @@ from django.http import HttpResponse
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
+from django.db.models import Prefetch
+from django.db.models import Q, Count
+from tasks.models import Task
 
 
 def register_user(request):
@@ -85,8 +88,34 @@ def assign_role(request, user_id):
 
 @user_passes_test(is_admin, login_url='no-permission')
 def admin_dashboard(request):
-    users = User.objects.prefetch_related('groups').all()
-    return render(request, 'admin/dashboard.html', {'users': users})
+    users = User.objects.prefetch_related(
+        Prefetch('groups', queryset=Group.objects.all(),
+                 to_attr='all_groups')
+    ).all()
+
+    for user in users:
+        if user.all_groups:
+            user.group_name = user.all_groups[0].name
+        else:
+            user.group_name = 'No Group Assigned'
+
+    counts = Task.objects.aggregate(
+        total=Count('id'),
+        completed=Count('id', filter=Q(status='COMPLETED')),
+        in_progress=Count('id', filter=Q(status='IN_PROGRESS')),
+        pending=Count('id', filter=Q(status='PENDING')),
+    )
+
+    # Data for role chart
+    groups = Group.objects.annotate(user_count=Count('user'))
+    roles = [group.name for group in groups]
+    role_counts = [group.user_count for group in groups]
+    return render(request, 'admin/analytics.html', {
+        'users': users,
+        'counts': counts,
+        'roles': roles,
+        'role_counts': role_counts
+    })
 
 
 @user_passes_test(is_admin, login_url='no-permission')
@@ -109,3 +138,18 @@ def create_group(request):
 def group_list(request):
     groups = Group.objects.prefetch_related('permissions').all()
     return render(request, 'admin/group_list.html', {'groups': groups})
+
+
+def user_list(request):
+    users = User.objects.prefetch_related(
+        Prefetch('groups', queryset=Group.objects.all(),
+                 to_attr='all_groups')
+    ).all()
+
+    for user in users:
+        if user.all_groups:
+            user.group_name = user.all_groups[0].name
+        else:
+            user.group_name = 'No Group Assigned'
+
+    return render(request, 'admin/userlist.html', {'users': users})

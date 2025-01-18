@@ -3,11 +3,45 @@ from tasks.forms import TaskModelForm, TaskDetailModelForm
 from tasks.models import Task, Project
 from django.db.models import Q, Count
 from django.contrib import messages
+from django.contrib.auth.models import User
+from django.views import View
+from django.views.generic.base import ContextMixin
+from users.views import is_admin
+from django.contrib.auth.decorators import (
+    user_passes_test,
+    login_required,
+    permission_required
+)
 
-
+from django.contrib.auth.mixins import (
+    LoginRequiredMixin,
+    PermissionRequiredMixin
+)
 # Create your views here.
 
 
+def is_manager(user: User):
+    return user.groups.filter(name='Manager').exists()
+
+
+def is_employee(user: User):
+    return user.groups.filter(name='Employee').exists()
+
+
+@login_required
+def dashboard(request):
+    if is_manager(request.user):
+        return redirect('manager-dashboard')
+    elif is_employee(request.user):
+        return redirect('employee-dashboard')
+    elif is_admin(request.user):
+        return redirect('admin-dashboard')
+
+    return redirect('no-permission')
+
+
+@login_required
+@user_passes_test(is_manager, login_url='no-permission')
 def manager_dashboard(request):
     type = request.GET.get('type', 'all')
 
@@ -39,23 +73,14 @@ def manager_dashboard(request):
     return render(request, "dashboard/manager_dashboard.html", context)
 
 
-def user_dashboard(request):
-    return render(request, "dashboard/user-dashboard.html")
+@login_required
+@user_passes_test(is_employee, login_url='no-permission')
+def employee_dashboard(request):
+    return render(request, "dashboard/employee-dashboard.html")
 
 
-def test(request):
-    names = ["Mahmud", "Ahamed", "John", "Mr. X"]
-    count = 0
-    for name in names:
-        count += 1
-    context = {
-        "names": names,
-        "age": 23,
-        "count": count
-    }
-    return render(request, 'test.html', context)
-
-
+@login_required
+@permission_required('tasks.add_task', login_url='no-permission')
 def create_task(request):
     task_form = TaskModelForm()  # For GET
     task_detail_form = TaskDetailModelForm()
@@ -77,6 +102,40 @@ def create_task(request):
 
     context = {"task_form": task_form, "task_detail_form": task_detail_form}
     return render(request, "task_form.html", context)
+
+
+class CreateTask(ContextMixin, LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = 'tasks.add_task'
+    login_url = 'sign-in'
+    template_name = 'task_form.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['task_form'] = kwargs.get('task_form', TaskModelForm())
+        context['task_detail_form'] = kwargs.get(
+            'task_detail_form', TaskDetailModelForm())
+        return context
+
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        return render(request, self.template_name, context)
+
+    def post(self, request, *args, **kwargs):
+        task_form = TaskModelForm(request.POST)
+        task_detail_form = TaskDetailModelForm(request.POST, request.FILES)
+
+        if task_form.is_valid() and task_detail_form.is_valid():
+
+            """ For Model Form Data """
+            task = task_form.save()
+            task_detail = task_detail_form.save(commit=False)
+            task_detail.task = task
+            task_detail.save()
+
+            messages.success(request, "Task Created Successfully")
+            context = self.get_context_data(
+                task_form=task_form, task_detail_form=task_detail_form)
+            return render(request, self.template_name, context)
 
 
 def update_task(request, id):
