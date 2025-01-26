@@ -1,10 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import AbstractBaseUser
+from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
 
 
-class CustomUser(AbstractBaseUser):
+class CustomUser(AbstractUser):
     profile_image = models.ImageField(
         upload_to='profile_images',
         blank=True,
@@ -13,4 +13,4 @@ class CustomUser(AbstractBaseUser):
     bio = models.TextField(blank=True)
 
     def __str__(self):
-        return self.get_username()
+        return self.username

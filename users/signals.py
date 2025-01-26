@@ -32,8 +32,8 @@ def send_activation_email(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=User)
 def assign_default_role(sender, instance, created, **kwargs):
-    """ When a user register automatically assigned to Employee role """
+    """ When a user register automatically assigned to User role """
     if created:
-        employee_group, created = Group.objects.get_or_create(name='Employee')
-        instance.groups.add(employee_group)
+        user_group, created = Group.objects.get_or_create(name='User')
+        instance.groups.add(user_group)
         instance.save()

@@ -5,7 +5,7 @@ from django.contrib.auth.models import Group
 from django.http import HttpResponse
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
+from django.contrib.auth.decorators import user_passes_test, login_required
 from django.db.models import Prefetch
 from django.db.models import Q, Count
 from tasks.models import Task
