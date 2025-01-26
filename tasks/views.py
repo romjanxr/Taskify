@@ -1,23 +1,15 @@
 from django.shortcuts import render, redirect
-from tasks.forms import TaskModelForm, TaskDetailModelForm
-from tasks.models import Task, Project
 from django.db.models import Q, Count
 from django.contrib import messages
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views import View
+from django.views.generic import UpdateView, DetailView
 from django.views.generic.base import ContextMixin
+from tasks.forms import TaskModelForm, TaskDetailModelForm
+from tasks.models import Task, Project
 from users.views import is_admin
-from django.contrib.auth.decorators import (
-    user_passes_test,
-    login_required,
-    permission_required
-)
-
-from django.contrib.auth.mixins import (
-    LoginRequiredMixin,
-    PermissionRequiredMixin
-)
-# Create your views here.
 
 
 def is_manager(user: User):
@@ -53,7 +45,6 @@ def manager_dashboard(request):
     )
 
     # Retriving task data
-
     base_query = Task.objects.select_related(
         'details').prefetch_related('assigned_to')
 
@@ -77,31 +68,6 @@ def manager_dashboard(request):
 @user_passes_test(is_employee, login_url='no-permission')
 def employee_dashboard(request):
     return render(request, "dashboard/employee-dashboard.html")
-
-
-@login_required
-@permission_required('tasks.add_task', login_url='no-permission')
-def create_task(request):
-    task_form = TaskModelForm()  # For GET
-    task_detail_form = TaskDetailModelForm()
-
-    if request.method == "POST":
-        task_form = TaskModelForm(request.POST)
-        task_detail_form = TaskDetailModelForm(request.POST)
-
-        if task_form.is_valid() and task_detail_form.is_valid():
-
-            """ For Model Form Data """
-            task = task_form.save()
-            task_detail = task_detail_form.save(commit=False)
-            task_detail.task = task
-            task_detail.save()
-
-            messages.success(request, "Task Created Successfully")
-            return redirect('create-task')
-
-    context = {"task_form": task_form, "task_detail_form": task_detail_form}
-    return render(request, "task_form.html", context)
 
 
 class CreateTask(ContextMixin, LoginRequiredMixin, PermissionRequiredMixin, View):
@@ -138,6 +104,26 @@ class CreateTask(ContextMixin, LoginRequiredMixin, PermissionRequiredMixin, View
             return render(request, self.template_name, context)
 
 
+class TaskDetail(DetailView):
+    model = Task
+    template_name = 'task_details.html'
+    context_object_name = 'task'
+    pk_url_kwarg = 'task_id'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)  # {"task": task}
+        # {"task": task, 'status_choices': status_choices}
+        context['status_choices'] = Task.STATUS_CHOICES
+        return context
+
+    def post(self, request, *args, **kwargs):
+        task = self.get_object()
+        selected_status = request.POST.get('task_status')
+        task.status = selected_status
+        task.save()
+        return redirect('task-details', task.id)
+
+
 def update_task(request, id):
     task = Task.objects.get(id=id)
     task_form = TaskModelForm(instance=task)  # For GET
@@ -165,6 +151,45 @@ def update_task(request, id):
     return render(request, "task_form.html", context)
 
 
+class UpdateTask(UpdateView):
+    model = Task
+    form_class = TaskModelForm
+    template_name = 'task_form.html'
+    context_object_name = 'task'
+    pk_url_kwarg = 'id'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['task_form'] = self.get_form()
+        # print(context)
+        if hasattr(self.object, 'details') and self.object.details:
+            context['task_detail_form'] = TaskDetailModelForm(
+                instance=self.object.details)
+        else:
+            context['task_detail_form'] = TaskDetailModelForm()
+
+        return context
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        task_form = TaskModelForm(request.POST, instance=self.object)
+
+        task_detail_form = TaskDetailModelForm(
+            request.POST, request.FILES, instance=getattr(self.object, 'details', None))
+
+        if task_form.is_valid() and task_detail_form.is_valid():
+
+            """ For Model Form Data """
+            task = task_form.save()
+            task_detail = task_detail_form.save(commit=False)
+            task_detail.task = task
+            task_detail.save()
+
+            messages.success(request, "Task Updated Successfully")
+            return redirect('update-task', self.object.id)
+        return redirect('update-task', self.object.id)
+
+
 def delete_task(request, id):
     if request.method == 'POST':
         task = Task.objects.get(id=id)
@@ -176,6 +201,7 @@ def delete_task(request, id):
         return redirect('manager-dashboard')
 
 
+@permission_required('tasks.view_task', login_url='no-permission')
 def view_task(request):
     projects = Project.objects.annotate(
         num_task=Count('task')).order_by('num_task')

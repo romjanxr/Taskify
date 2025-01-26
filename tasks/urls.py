@@ -1,14 +1,14 @@
 from django.urls import path
-from tasks.views import (
-    manager_dashboard,
-    employee_dashboard,
-    dashboard,
-    CreateTask
-)
+from tasks import views
 
 urlpatterns = [
-    path('dashboard', dashboard, name='dashboard'),
-    path('manager-dashboard/', manager_dashboard, name='manager-dashboard'),
-    path('employee-dashboard/', employee_dashboard, name='employee-dashboard'),
-    path('create-task/', CreateTask.as_view(), name='create-task')
+    path('dashboard', views.dashboard, name='dashboard'),
+    path('manager-dashboard/', views.manager_dashboard, name='manager-dashboard'),
+    path('employee-dashboard/', views.employee_dashboard,
+         name='employee-dashboard'),
+    path('view-task/', views.view_task, name='view-task'),
+    path('create-task/', views.CreateTask.as_view(), name='create-task'),
+    path('view-task/<int:id>/', views.TaskDetail.as_view(), name='view-task-detail'),
+    path('update-task/<int:id>/', views.UpdateTask.as_view(), name='update-task'),
+    path('delete-task/<int:id>/', views.delete_task, name='delete-task')
 ]
