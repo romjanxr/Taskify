@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from users.forms import RegistrationForm, LoginForm, AssignRoleForm, CreateGroupForm
-from django.contrib.auth import login, logout, authenticate
-from django.contrib.auth.models import User, Group
+from django.contrib.auth import login, logout, get_user_model
+from django.contrib.auth.models import Group
 from django.http import HttpResponse
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib import messages
@@ -9,6 +9,8 @@ from django.contrib.auth.decorators import user_passes_test, login_required, per
 from django.db.models import Prefetch
 from django.db.models import Q, Count
 from tasks.models import Task
+
+User = get_user_model()
 
 
 def register_user(request):

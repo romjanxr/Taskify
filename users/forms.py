@@ -1,10 +1,12 @@
 import re
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
 from core.mixins import StyledFormMixin
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import Group, Permission
+
+User = get_user_model()
 
 
 class RegistrationForm(StyledFormMixin, forms.ModelForm):

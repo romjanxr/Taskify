@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.db.models import Q, Count
 from django.contrib import messages
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views import View
@@ -11,12 +11,14 @@ from tasks.forms import TaskModelForm, TaskDetailModelForm
 from tasks.models import Task, Project
 from users.views import is_admin
 
+User = get_user_model()
 
-def is_manager(user: User):
+
+def is_manager(user):
     return user.groups.filter(name='Manager').exists()
 
 
-def is_employee(user: User):
+def is_employee(user):
     return user.groups.filter(name='Employee').exists()
 
 
