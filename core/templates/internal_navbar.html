@@ -14,7 +14,7 @@
                             <img class="h-8 w-8 rounded-full object-cover" src="https://placekitten.com/100/100" alt="User avatar">
                         </button>
                         <div id="user-menu" class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 hidden">
-                            <a href="{% url 'manager-dashboard' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
+                            <a href="{% url 'dashboard' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Dashboard</a>
                             <form method='post' action="{% url 'logout' %}">
                                 {% csrf_token %}
                                 <button class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
@@ -31,7 +31,7 @@
                 </div>
             </div>
             <div id="mobile-menu" class="md:hidden hidden mt-4">
-                <a href="#" class="block py-2 text-gray-600 hover:text-gray-800">Dashboard</a>
+                <a href="{% url 'dashboard' %}" class="block py-2 text-gray-600 hover:text-gray-800">Dashboard</a>
                 <a href="#" class="block py-2 text-gray-600 hover:text-gray-800">Tasks</a>
                 <a href="#" class="block py-2 text-gray-600 hover:text-gray-800">Projects</a>
                 <a href="#" class="block py-2 text-gray-600 hover:text-gray-800">Team</a>

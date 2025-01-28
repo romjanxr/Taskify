@@ -63,7 +63,7 @@ def activate_user(request, user_id, token):
         return HttpResponse('User not found')
 
 
-def is_admin(user: User):
+def is_admin(user):
     # Ensures only staff users (admins) can access the view
     return user.groups.filter(name='Admin').exists()
 
