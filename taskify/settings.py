@@ -6,7 +6,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = config('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
 ALLOWED_HOSTS = ['127.0.0.1', '0.0.0.0']
@@ -95,9 +94,6 @@ DATABASES = {
 }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -143,3 +139,7 @@ EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = 'slashupdates@gmail.com'
 
 FRONTEND_URL = 'http://127.0.0.1:8000'
+
+LOGIN_URL = '/users/sign-in/'
+LOGIN_REDIRECT_URL = '/tasks/dashboard/'
+LOGOUT_REDIRECT_URL = '/'

@@ -1,10 +1,11 @@
 from django.urls import path
 from users.views import activate_user, admin_dashboard, create_group, register_user, LoginView, logout_user, group_list, assign_role, user_list
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
     path('registration', register_user, name='registration'),
-    path('logout/', logout_user, name='logout'),
+    path('logout/', LogoutView.as_view(), name='logout'),
     path('activate/<int:user_id>/<str:token>/',
          activate_user, name='activate-user'),
     path('admin/dashboard/', admin_dashboard, name='admin-dashboard'),

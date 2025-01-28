@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout, get_user_model
-from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView
+from django.contrib.auth.views import LoginView, PasswordChangeView
 from django.contrib.auth.models import Group
 from django.http import HttpResponse
 from django.contrib.auth.tokens import default_token_generator
@@ -41,13 +41,6 @@ class CustomLoginView(LoginView):
 class ChangePassword(PasswordChangeView):
     template_name = 'accounts/password_change.html'
     form_class = CustomPasswordChangeForm
-
-
-@login_required
-def logout_user(request):
-    if request.method == 'POST':
-        logout(request)
-        return redirect('login')
 
 
 def activate_user(request, user_id, token):
