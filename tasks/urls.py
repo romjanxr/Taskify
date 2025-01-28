@@ -6,7 +6,7 @@ urlpatterns = [
     path('manager-dashboard/', views.manager_dashboard, name='manager-dashboard'),
     path('employee-dashboard/', views.employee_dashboard,
          name='employee-dashboard'),
-    path('view-task/', views.view_task, name='view-task'),
+    path('task-list/', views.view_task, name='task-list'),
     path('create-task/', views.CreateTask.as_view(), name='create-task'),
     path('view-task/<int:id>/', views.TaskDetail.as_view(), name='view-task-detail'),
     path('update-task/<int:id>/', views.UpdateTask.as_view(), name='update-task'),

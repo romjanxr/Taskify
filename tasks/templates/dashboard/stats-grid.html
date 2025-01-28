@@ -1,7 +1,7 @@
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
     <div class="bg-white rounded-lg shadow p-6">
         <h2 class="text-xl font-semibold mb-2">TOTAL TASK</h2>
-        <p class="text-3xl font-bold">3</p>
+        <p class="text-3xl font-bold">{{counts.total}}</p>
         <p class="text-gray-500">111 last month</p>
         <div class="mt-4 w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -11,7 +11,7 @@
     </div>
     <div class="bg-white rounded-lg shadow p-6">
         <h2 class="text-xl font-semibold mb-2">COMPLETED TASK</h2>
-        <p class="text-3xl font-bold">1</p>
+        <p class="text-3xl font-bold">{{counts.completed}}</p>
         <p class="text-gray-500">111 last month</p>
         <div class="mt-4 w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -21,7 +21,7 @@
     </div>
     <div class="bg-white rounded-lg shadow p-6">
         <h2 class="text-xl font-semibold mb-2">TASK IN PROGRESS</h2>
-        <p class="text-3xl font-bold">1</p>
+        <p class="text-3xl font-bold">{{counts.completed}}</p>
         <p class="text-gray-500">111 last month</p>
         <div class="mt-4 w-10 h-10 bg-yellow-100 rounded-full flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-yellow-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -31,7 +31,7 @@
     </div>
     <div class="bg-white rounded-lg shadow p-6">
         <h2 class="text-xl font-semibold mb-2">TODOS</h2>
-        <p class="text-3xl font-bold">1</p>
+        <p class="text-3xl font-bold">{{counts.pending}}</p>
         <p class="text-gray-500">111 last month</p>
         <div class="mt-4 w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
