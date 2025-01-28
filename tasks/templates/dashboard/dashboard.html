@@ -28,19 +28,26 @@
                         </svg>
                         Dashboard
                     </a>
-                    <a href='{% url "task-list" %}' class="block py-2 px-4 rounded-md {% if request.get_full_path == '/tasks/task-list/' %} bg-blue-500 text-white {% else %} text-gray-600 hover:bg-gray-100{% endif %}">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
+                    <a href='{% url "task-list" %}' class="block py-2 px-4 rounded-md {% if request.get_full_path == '/tasks/task-list' %} bg-blue-500 text-white {% else %} text-gray-600 hover:bg-gray-100{% endif %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M8 2a1 1 0 00-1 1v1H5a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2V6a2 2 0 00-2-2h-2V3a1 1 0 00-1-1H8zm1 2h6v1H9V4zm-2 3h10v12H7V7zm2 2a1 1 0 100 2h6a1 1 0 100-2H9z"/>
                         </svg>
+                        
                         All Task
                     </a>
-                    <a href="#" class="block py-2 px-4 rounded-md {% if request.get_full_path == '/tasks/task-list?type=completed' %} bg-blue-500 text-white {% else %} text-gray-600 hover:bg-gray-100{% endif %}">
+                    <a href="{% url 'task-list' %}?type=pending" class="block py-2 px-4 rounded-md {% if request.get_full_path == '/tasks/task-list?type=pending' %} bg-blue-500 text-white {% else %} text-gray-600 hover:bg-gray-100{% endif %}">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M6 2a1 1 0 000 2h12a1 1 0 100-2H6zm6 8a5.98 5.98 0 01-4.24-1.76A1 1 0 018 7h8a1 1 0 01.24 1.24A5.98 5.98 0 0112 10zm0 2c1.6 0 3.07.62 4.24 1.76A1 1 0 0116 15H8a1 1 0 01-.24-1.24A5.98 5.98 0 0112 12zm6 10a1 1 0 000-2H6a1 1 0 100 2h12z"/>
+                        </svg>                        
+                        Pending
+                    </a>
+                    <a href="{% url 'task-list' %}?type=completed" class="block py-2 px-4 rounded-md {% if request.get_full_path == '/tasks/task-list?type=completed' %} bg-blue-500 text-white {% else %} text-gray-600 hover:bg-gray-100{% endif %}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
                         </svg>
                         Completed
                     </a>
-                    <a href="#" class="block py-2 px-4 rounded-md {% if request.get_full_path == '/tasks/task-list?type=in-progress' %} bg-blue-500 text-white {% else %} text-gray-600 hover:bg-gray-100{% endif %}">
+                    <a href="{% url 'task-list' %}?type=in-progress" class="block py-2 px-4 rounded-md {% if request.get_full_path == '/tasks/task-list?type=in-progress' %} bg-blue-500 text-white {% else %} text-gray-600 hover:bg-gray-100{% endif %}">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" viewBox="0 0 20 20" fill="currentColor">
                             <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd" />
                         </svg>

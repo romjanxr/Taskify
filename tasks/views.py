@@ -37,8 +37,6 @@ def dashboard(request):
 @login_required
 @user_passes_test(is_manager, login_url='no-permission')
 def manager_dashboard(request):
-    type = request.GET.get('type', 'all')
-
     counts = Task.objects.aggregate(
         total=Count('id'),
         completed=Count('id', filter=Q(status='COMPLETED')),
@@ -47,17 +45,8 @@ def manager_dashboard(request):
     )
 
     # Retriving task data
-    base_query = Task.objects.select_related(
-        'details').prefetch_related('assigned_to')
-
-    if type == 'completed':
-        tasks = base_query.filter(status='COMPLETED')
-    elif type == 'in-progress':
-        tasks = base_query.filter(status='IN_PROGRESS')
-    elif type == 'pending':
-        tasks = base_query.filter(status='PENDING')
-    elif type == 'all':
-        tasks = base_query.all()
+    tasks = Task.objects.select_related(
+        'details').prefetch_related('assigned_to').all()
 
     context = {
         "tasks": tasks,
@@ -205,6 +194,18 @@ def delete_task(request, id):
 
 @permission_required('tasks.view_task', login_url='no-permission')
 def view_task(request):
-    projects = Project.objects.annotate(
-        num_task=Count('task')).order_by('num_task')
-    return render(request, "task-list.html", {"projects": projects})
+    type = request.GET.get('type', 'all')
+
+    base_query = Task.objects.select_related(
+        'details').prefetch_related('assigned_to')
+
+    if type == 'completed':
+        tasks = base_query.filter(status='COMPLETED')
+    elif type == 'in-progress':
+        tasks = base_query.filter(status='IN_PROGRESS')
+    elif type == 'pending':
+        tasks = base_query.filter(status='PENDING')
+    elif type == 'all':
+        tasks = base_query.all()
+
+    return render(request, "task-list.html", {"tasks": tasks})

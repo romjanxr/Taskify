@@ -7,39 +7,25 @@
 
       {% comment %} Task Columns {% endcomment %}
       <div class="grid grid-cols-3 gap-6">
-        {% comment %} To Do Column {% endcomment %}
-        <div class="bg-white rounded-lg p-4">
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center gap-2">
-              <div class="w-2 h-2 bg-blue-600 rounded-full"></div>
-              <h2 class="font-semibold">To Do</h2>
-            </div>
-            <button
-              class="w-6 h-6 rounded-full hover:bg-gray-100 flex items-center justify-center"
-            >
-              <svg
-                class="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+        {% for task in tasks %}
+          <div class="bg-white rounded-lg p-4">
+            <div class="flex items-center justify-between mb-4">
+              <div class="flex items-center gap-2">
+                <div 
+                  class="w-2 h-2 rounded-full
+                        {% if task.status == 'COMPLETED' %}
+                            bg-green-600 
+                          {% elif task.status == 'PENDING' %}
+                            bg-blue-600 
+                          {% elif task.status == 'IN_PROGRESS' %}
+                            bg-yellow-600 
+                          {% endif %}">
+                </div>
+                <h2 class="font-semibold">{{task.status}}</h2>
+              </div>
+              <button
+                class="w-6 h-6 rounded-full hover:bg-gray-100 flex items-center justify-center"
               >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
-            </button>
-          </div>
-
-          {% comment %} Task Card {% endcomment %}
-          <div class="bg-white rounded-lg border border-gray-200 p-4 mb-3">
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-blue-600 text-sm font-medium"
-                >LOW PRIORITY</span
-              >
-              <button class="text-gray-400 hover:text-gray-600">
                 <svg
                   class="w-4 h-4"
                   fill="none"
@@ -50,416 +36,143 @@
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     stroke-width="2"
-                    d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                   />
                 </svg>
               </button>
             </div>
-            <h3 class="font-semibold mb-2">Test Low Task</h3>
-            <div class="text-sm text-gray-500 mb-3">14-Mar-2024</div>
-            <div class="flex items-center justify-between mb-4">
-              <div class="flex items-center gap-4">
-                <div class="flex items-center gap-1">
-                  <svg
-                    class="w-4 h-4 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-                    />
-                  </svg>
-                  <span class="text-sm text-gray-500">76</span>
-                </div>
-                <div class="flex items-center gap-1">
-                  <svg
-                    class="w-4 h-4 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
-                    />
-                  </svg>
-                  <span class="text-sm text-gray-500">3</span>
-                </div>
-                <div class="flex items-center gap-1">
-                  <svg
-                    class="w-4 h-4 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                    />
-                  </svg>
-                  <span class="text-sm text-gray-500">1/2</span>
-                </div>
-              </div>
-              <div class="flex -space-x-2">
-                <div
-                  class="w-6 h-6 rounded-full bg-red-500 text-white text-xs flex items-center justify-center"
-                >
-                  B
-                </div>
-                <div
-                  class="w-6 h-6 rounded-full bg-yellow-500 text-white text-xs flex items-center justify-center"
-                >
-                  JS
-                </div>
-                <div
-                  class="w-6 h-6 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center"
-                >
-                  CA
-                </div>
-              </div>
-            </div>
-            <div class="space-y-2">
-              <div class="text-sm">test</div>
-              <div class="flex items-center gap-2 text-sm text-gray-500">
-                <span>14-Mar-2024</span>
-                <span class="px-2 py-1 bg-blue-50 text-blue-600 rounded"
-                  >Design</span
-                >
-              </div>
-            </div>
-            <button
-              class="mt-4 text-gray-400 hover:text-gray-600 text-sm flex items-center gap-2"
-            >
-              <svg
-                class="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
-              ADD SUBTASK
-            </button>
-          </div>
-        </div>
 
-        {% comment %} In Progress Column {% endcomment %}
-        <div class="bg-white rounded-lg p-4">
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center gap-2">
-              <div class="w-2 h-2 bg-amber-500 rounded-full"></div>
-              <h2 class="font-semibold">In Progress</h2>
-            </div>
-            <button
-              class="w-6 h-6 rounded-full hover:bg-gray-100 flex items-center justify-center"
-            >
-              <svg
-                class="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
-            </button>
+            {% comment %} Task Card {% endcomment %}
+              <div class="bg-white rounded-lg border border-gray-200 p-4 mb-3">
+                <div class="flex items-center justify-between mb-3">
+                  <span 
+                    class="{% if task.details.priority == 'H' %}
+                            text-red-600
+                          {% elif task.details.priority == 'M' %}
+                            text-blue-600
+                          {% elif task.details.priority == 'L' %}
+                            text-gray-600
+                          {% endif %} text-sm font-medium"
+                    >{{task.details.get_priority_display|upper}} PRIORITY</span
+                  >
+                  <button class="text-gray-400 hover:text-gray-600">
+                    <svg
+                      class="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <h3 class="font-semibold mb-2">{{task.title}}</h3>
+                <div class="text-sm text-gray-500 mb-3">14-Mar-2024</div>
+                <div class="flex items-center justify-between mb-4">
+                  <div class="flex items-center gap-4">
+                    <div class="flex items-center gap-1">
+                      <svg
+                        class="w-4 h-4 text-gray-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
+                        />
+                      </svg>
+                      <span class="text-sm text-gray-500">76</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <svg
+                        class="w-4 h-4 text-gray-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
+                        />
+                      </svg>
+                      <span class="text-sm text-gray-500">3</span>
+                    </div>
+                    <div class="flex items-center gap-1">
+                      <svg
+                        class="w-4 h-4 text-gray-400"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                        />
+                      </svg>
+                      <span class="text-sm text-gray-500">1/2</span>
+                    </div>
+                  </div>
+                  <div class="flex -space-x-2">
+                    <div
+                      class="w-6 h-6 rounded-full bg-red-500 text-white text-xs flex items-center justify-center"
+                    >
+                      B
+                    </div>
+                    <div
+                      class="w-6 h-6 rounded-full bg-yellow-500 text-white text-xs flex items-center justify-center"
+                    >
+                      JS
+                    </div>
+                    <div
+                      class="w-6 h-6 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center"
+                    >
+                      CA
+                    </div>
+                  </div>
+                </div>
+                <div class="space-y-2">
+                  <div class="text-sm">test</div>
+                  <div class="flex items-center gap-2 text-sm text-gray-500">
+                    <span>14-Mar-2024</span>
+                    <span class="px-2 py-1 bg-blue-50 text-blue-600 rounded"
+                      >Design</span
+                    >
+                  </div>
+                </div>
+                <button
+                  class="mt-4 text-gray-400 hover:text-gray-600 text-sm flex items-center gap-2"
+                >
+                  <svg
+                    class="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                    />
+                  </svg>
+                  ADD SUBTASK
+                </button>
+              </div>
           </div>
+        {% endfor %}
 
-          {% comment %} Task Card {% endcomment %}
-          <div class="bg-white rounded-lg border border-gray-200 p-4">
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-gray-600 text-sm font-medium"
-                >NORMAL PRIORITY</span
-              >
-              <button class="text-gray-400 hover:text-gray-600">
-                <svg
-                  class="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-                  />
-                </svg>
-              </button>
-            </div>
-            <h3 class="font-semibold mb-2">Test task</h3>
-            <div class="text-sm text-gray-500 mb-3">14-Mar-2024</div>
-            <div class="flex items-center justify-between mb-4">
-              <div class="flex items-center gap-4">
-                <div class="flex items-center gap-1">
-                  <svg
-                    class="w-4 h-4 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-                    />
-                  </svg>
-                  <span class="text-sm text-gray-500">24</span>
-                </div>
-                <div class="flex items-center gap-1">
-                  <svg
-                    class="w-4 h-4 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
-                    />
-                  </svg>
-                  <span class="text-sm text-gray-500">0</span>
-                </div>
-                <div class="flex items-center gap-1">
-                  <svg
-                    class="w-4 h-4 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                    />
-                  </svg>
-                  <span class="text-sm text-gray-500">1/1</span>
-                </div>
-              </div>
-              <div class="flex -space-x-2">
-                <div
-                  class="w-6 h-6 rounded-full bg-red-500 text-white text-xs flex items-center justify-center"
-                >
-                  B
-                </div>
-                <div
-                  class="w-6 h-6 rounded-full bg-pink-500 text-white text-xs flex items-center justify-center"
-                >
-                  EW
-                </div>
-                <div
-                  class="w-6 h-6 rounded-full bg-indigo-500 text-white text-xs flex items-center justify-center"
-                >
-                  AJ
-                </div>
-              </div>
-            </div>
-            <div class="space-y-2">
-              <div class="text-sm">sub task</div>
-              <div class="flex items-center gap-2 text-sm text-gray-500">
-                <span>14-Mar-2024</span>
-                <span class="px-2 py-1 bg-blue-50 text-blue-600 rounded"
-                  >Testing</span
-                >
-              </div>
-            </div>
-            <button
-              class="mt-4 text-gray-400 hover:text-gray-600 text-sm flex items-center gap-2"
-            >
-              <svg
-                class="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
-              ADD SUBTASK
-            </button>
-          </div>
-        </div>
-
-        {% comment %} Completed Column {% endcomment %}
-        <div class="bg-white rounded-lg p-4">
-          <div class="flex items-center justify-between mb-4">
-            <div class="flex items-center gap-2">
-              <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-              <h2 class="font-semibold">Completed</h2>
-            </div>
-            <button
-              class="w-6 h-6 rounded-full hover:bg-gray-100 flex items-center justify-center"
-            >
-              <svg
-                class="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
-            </button>
-          </div>
-
-          {% comment %} Task Card {% endcomment %}
-          <div class="bg-white rounded-lg border border-gray-200 p-4">
-            <div class="flex items-center justify-between mb-3">
-              <span class="text-red-600 text-sm font-medium"
-                >HIGH PRIORITY</span
-              >
-              <button class="text-gray-400 hover:text-gray-600">
-                <svg
-                  class="w-4 h-4"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
-                  />
-                </svg>
-              </button>
-            </div>
-            <h3 class="font-semibold mb-2">
-              Task manager youtube tutorial
-            </h3>
-            <div class="text-sm text-gray-500 mb-3">9-Feb-2024</div>
-            <div class="flex items-center justify-between mb-4">
-              <div class="flex items-center gap-4">
-                <div class="flex items-center gap-1">
-                  <svg
-                    class="w-4 h-4 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"
-                    />
-                  </svg>
-                  <span class="text-sm text-gray-500">26</span>
-                </div>
-                <div class="flex items-center gap-1">
-                  <svg
-                    class="w-4 h-4 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
-                    />
-                  </svg>
-                  <span class="text-sm text-gray-500">2</span>
-                </div>
-                <div class="flex items-center gap-1">
-                  <svg
-                    class="w-4 h-4 text-gray-400"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      stroke-width="2"
-                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 0022h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                    />
-                  </svg>
-                  <span class="text-sm text-gray-500">1/1</span>
-                </div>
-              </div>
-              <div class="flex -space-x-2">
-                <div
-                  class="w-6 h-6 rounded-full bg-green-500 text-white text-xs flex items-center justify-center"
-                >
-                  B
-                </div>
-                <div
-                  class="w-6 h-6 rounded-full bg-red-500 text-white text-xs flex items-center justify-center"
-                >
-                  AJ
-                </div>
-                <div
-                  class="w-6 h-6 rounded-full bg-yellow-500 text-white text-xs flex items-center justify-center"
-                >
-                  JS
-                </div>
-                <div
-                  class="w-6 h-6 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center"
-                >
-                  CA
-                </div>
-              </div>
-            </div>
-            <div class="space-y-2">
-              <div class="text-sm">Task manager youtube tutorial</div>
-              <div class="flex items-center gap-2 text-sm text-gray-500">
-                <span>9-Feb-2024</span>
-                <span class="px-2 py-1 bg-blue-50 text-blue-600 rounded"
-                  >tutorial</span
-                >
-              </div>
-            </div>
-            <button
-              class="mt-4 text-gray-400 hover:text-gray-600 text-sm flex items-center gap-2"
-            >
-              <svg
-                class="w-4 h-4"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                />
-              </svg>
-              ADD SUBTASK
-            </button>
-          </div>
-        </div>
       </div>
     </main>
   </div>
