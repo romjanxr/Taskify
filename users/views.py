@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from users.forms import RegistrationForm, LoginForm, AssignRoleForm, CreateGroupForm
-from django.contrib.auth import login, logout, get_user_model
+from django.contrib.auth import logout, get_user_model
+from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView
 from django.contrib.auth.models import Group
 from django.http import HttpResponse
 from django.contrib.auth.tokens import default_token_generator
@@ -9,6 +9,7 @@ from django.contrib.auth.decorators import user_passes_test, login_required
 from django.db.models import Prefetch
 from django.db.models import Q, Count
 from tasks.models import Task
+from users.forms import RegistrationForm, LoginForm, AssignRoleForm, CreateGroupForm, CustomPasswordChangeForm
 
 User = get_user_model()
 
@@ -29,18 +30,17 @@ def register_user(request):
     return render(request, 'registration/register.html', {"form": form})
 
 
-def login_user(request):
-    form = LoginForm()
-    if request.method == 'POST':
-        form = LoginForm(data=request.POST)
-        if form.is_valid():
-            user = form.get_user()
-            login(request, user)
-            return redirect('home')
-        else:
-            print('form is not valid')
-            print(form.errors)
-    return render(request, 'registration/login.html', {'form': form})
+class CustomLoginView(LoginView):
+    form_class = LoginForm
+
+    def get_success_url(self):
+        next_url = self.request.GET.get('next')
+        return next_url if next_url else super().get_success_url()
+
+
+class ChangePassword(PasswordChangeView):
+    template_name = 'accounts/password_change.html'
+    form_class = CustomPasswordChangeForm
 
 
 @login_required

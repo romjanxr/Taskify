@@ -1,8 +1,8 @@
 from django.urls import path
-from users.views import activate_user, admin_dashboard, create_group, register_user, login_user, logout_user, group_list, assign_role, user_list
+from users.views import activate_user, admin_dashboard, create_group, register_user, LoginView, logout_user, group_list, assign_role, user_list
 
 urlpatterns = [
-    path('login/', login_user, name='login'),
+    path('login/', LoginView.as_view(), name='login'),
     path('registration', register_user, name='registration'),
     path('logout/', logout_user, name='logout'),
     path('activate/<int:user_id>/<str:token>/',
