@@ -31,6 +31,7 @@ def register_user(request):
 
 
 class CustomLoginView(LoginView):
+    template_name = 'registration/login.html'
     form_class = LoginForm
 
     def get_success_url(self):
@@ -65,16 +66,18 @@ def is_admin(user):
 def assign_role(request, user_id):
     """Using this view, an admin can assign any user to a specific role."""
     user = User.objects.get(id=user_id)
+    print(user)
 
     if request.method == 'POST':
         form = AssignRoleForm(request.POST)
         if form.is_valid():
-            role = form.cleaned_data['role']
+            role = form.cleaned_data.get('role')
+            print(role)
             user.groups.clear()  # Remove old roles
             user.groups.add(role)  # Add the new role
             messages.success(request, f"User {user.username} has been assigned to the {
                              role.name} role.")
-            return redirect('admin-dashboard')
+            return redirect('dashboard')
     else:
         form = AssignRoleForm()
 

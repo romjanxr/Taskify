@@ -67,6 +67,7 @@ class RegistrationForm(StyledFormMixin, forms.ModelForm):
 
 class LoginForm(StyledFormMixin, AuthenticationForm):
     def __init__(self, *args, **kwargs):
+        print("login form initialized")
         super().__init__(*args, **kwargs)
 
     # def clean(self):

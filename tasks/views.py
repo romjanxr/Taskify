@@ -5,7 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.views import View
-from django.views.generic import UpdateView, DetailView
+from django.views.generic import CreateView, UpdateView, DetailView
 from django.views.generic.base import ContextMixin
 from tasks.forms import TaskModelForm, TaskDetailModelForm
 from tasks.models import Task, Project
