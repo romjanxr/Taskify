@@ -21,7 +21,7 @@ CLOUDINARY_STORAGE = {
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-MEDIA_URL = f'https://res.cloudinary.com/{config('CLOUD_NAME')}'
+MEDIA_URL = f'https://res.cloudinary.com/{config('CLOUD_NAME')}/'
 
 # Whitenoise for Static Files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
