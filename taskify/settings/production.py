@@ -6,7 +6,7 @@ import cloudinary.api
 DEBUG = False
 # ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=lambda v: [
 #                        s.strip() for s in v.split(",")])
-ALLOWED_HOSTS = ['taskify-i2j4nptyc-romjanxrs-projects.vercel.app']
+ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app"]
 
 INSTALLED_APPS += [
     'cloudinary',
