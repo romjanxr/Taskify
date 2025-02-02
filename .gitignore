@@ -3,6 +3,7 @@ __pycache__/
 node_modules
 db.sqlite3
 .env
+.env_dev
 
 # Development-specific files
 package-lock.json
