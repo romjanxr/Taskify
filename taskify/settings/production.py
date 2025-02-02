@@ -4,8 +4,9 @@ import cloudinary.uploader
 import cloudinary.api
 
 DEBUG = False
-ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=lambda v: [
-                       s.strip() for s in v.split(",")])
+# ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=lambda v: [
+#                        s.strip() for s in v.split(",")])
+ALLOWED_HOSTS = ['taskify-i2j4nptyc-romjanxrs-projects.vercel.app']
 
 INSTALLED_APPS += [
     'cloudinary',
