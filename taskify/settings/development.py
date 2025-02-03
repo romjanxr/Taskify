@@ -37,3 +37,5 @@ INTERNAL_IPS = [
 
 MEDIA_URL = "/media/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
+
+FRONTEND_URL = "http://127.0.0.1:8000"

@@ -42,6 +42,8 @@ DATABASES = {
 MIDDLEWARE.insert(MIDDLEWARE.index('django.middleware.security.SecurityMiddleware') +
                   1, "whitenoise.middleware.WhiteNoiseMiddleware")
 
+FRONTEND_URL = "https://djtaskify.vercel.app"
+
 # Security settings
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
