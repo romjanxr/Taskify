@@ -5,6 +5,8 @@ from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from core.mixins import StyledFormMixin
 from django.contrib.auth import authenticate
 from django.contrib.auth.models import Group, Permission
+from functools import lru_cache
+
 
 User = get_user_model()
 
@@ -103,17 +105,39 @@ class AssignRoleForm(StyledFormMixin, forms.Form):
     )
 
 
+# class CreateGroupForm(StyledFormMixin, forms.ModelForm):
+#     permissions = forms.ModelMultipleChoiceField(
+#         queryset=Permission.objects.all(),
+#         widget=forms.CheckboxSelectMultiple,
+#         required=False,
+#         label='Assign Permission'
+#     )
+
+#     class Meta:
+#         model = Group
+#         fields = ['name', 'permissions']
+
 class CreateGroupForm(StyledFormMixin, forms.ModelForm):
     permissions = forms.ModelMultipleChoiceField(
-        queryset=Permission.objects.all(),
+        queryset=Permission.objects.none(),
         widget=forms.CheckboxSelectMultiple,
         required=False,
-        label='Assign Permission'
+        label="Assign Permission"
     )
 
     class Meta:
         model = Group
-        fields = ['name', 'permissions']
+        fields = ["name", "permissions"]  # Ensure 'name' is included
+
+    @staticmethod
+    # Cache permissions queryset to avoid duplicate queries
+    @lru_cache(maxsize=1)
+    def get_permissions_queryset():
+        return Permission.objects.select_related("content_type").all()
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)  # Properly initialize all fields
+        self.fields["permissions"].queryset = self.get_permissions_queryset()
 
 
 class CustomPasswordChangeForm(StyledFormMixin, PasswordChangeForm):

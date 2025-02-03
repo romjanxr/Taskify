@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import logout, get_user_model
 from django.contrib.auth.views import LoginView, PasswordChangeView
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
 from django.http import HttpResponse
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib import messages
@@ -116,20 +116,18 @@ def admin_dashboard(request):
     })
 
 
-@user_passes_test(is_admin, login_url='no-permission')
+@user_passes_test(is_admin, login_url="no-permission")
 def create_group(request):
-    form = CreateGroupForm()
-
-    if request.method == 'POST':
-        form = CreateGroupForm(request.POST)
-
+    if request.method == "POST":
+        form = CreateGroupForm(request.POST)  
         if form.is_valid():
             group = form.save()
-            messages.success(request, f"Group '{
-                             group.name} has been created successfully'")
-            return redirect('group-list')
+            messages.success(request, f"Group '{group.name}' has been created successfully")
+            return redirect("group-list")
+    else:
+        form = CreateGroupForm()
 
-    return render(request, 'admin/create_group.html', {"form": form})
+    return render(request, "admin/create_group.html", {"form": form})
 
 
 @user_passes_test(is_admin, login_url='no-permission')
