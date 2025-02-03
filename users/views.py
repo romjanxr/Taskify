@@ -24,6 +24,8 @@ def register_user(request):
             user.set_password(form.cleaned_data['password'])
             user.is_active = False
             user.save()
+            messages.success(
+                request, 'A Confirmation mail sent. Please check your email')
             return redirect('login')
         else:
             print("Form is not valid")
@@ -50,7 +52,8 @@ def activate_user(request, user_id, token):
         if default_token_generator.check_token(user, token):
             user.is_active = True
             user.save()
-            return redirect('manager-dashboard')
+            messages.success(request, "Account Activate. Please Login Now")
+            return redirect('login')
         else:
             return HttpResponse('Invalid token or user ID')
     except User.DoesNotExist:
@@ -119,10 +122,11 @@ def admin_dashboard(request):
 @user_passes_test(is_admin, login_url="no-permission")
 def create_group(request):
     if request.method == "POST":
-        form = CreateGroupForm(request.POST)  
+        form = CreateGroupForm(request.POST)
         if form.is_valid():
             group = form.save()
-            messages.success(request, f"Group '{group.name}' has been created successfully")
+            messages.success(request, f"Group '{
+                             group.name}' has been created successfully")
             return redirect("group-list")
     else:
         form = CreateGroupForm()
