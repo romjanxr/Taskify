@@ -88,7 +88,6 @@ EMAIL_HOST_USER = config("EMAIL_HOST_USER")
 EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = "slashupdates@gmail.com"
 
-FRONTEND_URL = "http://127.0.0.1:8000"
 
 LOGIN_URL = "/users/sign-in/"
 LOGIN_REDIRECT_URL = "/tasks/dashboard/"
