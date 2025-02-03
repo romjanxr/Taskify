@@ -1,7 +1,13 @@
 {% extends "dashboard/dashboard.html" %}
 {% block content %}
-{{navbar}}
-    <div class="container mx-auto px-6 pb-5">
+{% if messages %}
+    <div class='mx-auto w-1/2 my-5'>
+        {% for message in messages %}
+            <div class="px-2 py-3 border rounded-md {% if message.tags == 'success' %}bg-green-500{% endif %}">{{message}}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+        <div class="container mx-auto px-6 pb-5">
         <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
             <div class="bg-blue-600 text-white py-4 px-6">
                 <h2 class="text-2xl font-bold">Add New Task</h2>
