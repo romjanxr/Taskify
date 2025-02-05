@@ -7,7 +7,8 @@ from cloudinary.models import CloudinaryField
 class CustomUser(AbstractUser):
     profile_image = CloudinaryField(
         "profile_image",
-        blank=True
+        blank=True,
+        null=True
     )
     bio = models.TextField(blank=True)
 

@@ -1,7 +1,6 @@
 from .base import *
 
 DEBUG = True
-ALLOWED_HOSTS = ["*"]
 
 # DATABASES = {
 #     'default': {
@@ -35,7 +34,6 @@ INTERNAL_IPS = [
     "127.0.0.1",
 ]
 
-MEDIA_URL = "/media/"
 STATICFILES_DIRS = [BASE_DIR / "static"]
 
 FRONTEND_URL = "http://127.0.0.1:8000"
