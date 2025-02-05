@@ -109,7 +109,7 @@
                     {% for user in users %}
                     <li class="flex items-center">
                         <div class="h-10 w-10 mr-3 bg-gray-100 rounded-full overflow-hidden">
-                            <img src="{{ request.user.profile_image.url }}" alt="Annette Watson profile picture">
+                            <img src="{{ user.profile_image.url }}" alt="Annette Watson profile picture">
                         </div>
                         <div>
                             <div class="text-gray-600">{{user.get_full_name}}</div>
