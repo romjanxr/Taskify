@@ -71,6 +71,10 @@ class CreateTask(ContextMixin, LoginRequiredMixin, PermissionRequiredMixin, View
         context['task_form'] = kwargs.get('task_form', TaskModelForm())
         context['task_detail_form'] = kwargs.get(
             'task_detail_form', TaskDetailModelForm())
+        if self.request.user.groups.filter(name="Admin").exists():
+            context["base_template"] = "admin/admin-dashboard.html"
+        else:
+            context["base_template"] = "dashboard/dashboard.html"
         return context
 
     def get(self, request, *args, **kwargs):
@@ -181,4 +185,13 @@ def view_task(request):
     elif type == 'all':
         tasks = base_query.all()
 
-    return render(request, "task-list.html", {"tasks": tasks})
+    context = {
+        "tasks": tasks
+    }
+
+    if request.user.groups.filter(name="Admin").exists():
+        context["base_template"] = "admin/admin-dashboard.html"
+    else:
+        context["base_template"] = "dashboard/dashboard.html"
+
+    return render(request, "task-list.html", context)

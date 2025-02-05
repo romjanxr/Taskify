@@ -6,48 +6,85 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}{% endblock title %}</title>
     <link rel="stylesheet" href="{% static 'css/output.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="shortcut icon" type="image/png" href="{% static 'images/favicon.ico' %}" >
 </head>
 <body class="font-sans bg-gray-100">
     <div class="flex h-fit bg-gray-100">
         {% comment %} Sidebar {% endcomment %}
         <aside class="hidden sm:flex sm:flex-col">
-            <a href="{% url 'home' %}" class="inline-flex items-center justify-center h-20 w-20 bg-blue-600 hover:bg-blue-500 focus:bg-blue-500">
+            <a href="{% url 'home' %}" class="tooltip inline-flex items-center justify-center h-20 w-20 bg-blue-600 hover:bg-blue-500 focus:bg-blue-500">
+                <span class="tooltiptext">Home</span>
                 <svg class="h-12 w-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
             </a>
             <div class="flex-grow flex flex-col justify-between text-gray-500 bg-gray-800">
                 <nav class="flex flex-col mx-4 my-6 space-y-4">
-                    <a href="{% url 'dashboard' %}" class="inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg {% if request.resolver_match.url_name == 'admin-dashboard' %} bg-white rounded-lg text-blue-600{% endif %}">
-                        <span class="sr-only">Dashboard</span>
+                    <a href="{% url 'dashboard' %}" class="tooltip inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg {% if request.resolver_match.url_name == 'admin-dashboard' %} bg-white rounded-lg text-blue-600{% endif %}">
+                        <span class="tooltiptext">Dashboard</span>
                         <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
                     </a>
-                    <a href="{% url 'user-list' %}" class="inline-flex items-center justify-center py-3 {% if request.resolver_match.url_name == 'user-list' %} bg-white rounded-lg text-blue-600{% endif %}">
-                        <span class="sr-only">Users</span>
+                    <a href="{% url 'user-list' %}" class="tooltip inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg {% if request.resolver_match.url_name == 'user-list' %} bg-white rounded-lg text-blue-600{% endif %}">
+                        <span class="tooltiptext">Users</span>
                         <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                         </svg>
                     </a>
-                    <a href="{% url 'group-list' %}" class="inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg {% if request.resolver_match.url_name == 'group-list' %} bg-white rounded-lg text-blue-600{% endif %}">
-                        <span class="sr-only">Groups</span>
+                    <a href="{% url 'group-list' %}" class="tooltip inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg {% if request.resolver_match.url_name == 'group-list' %} bg-white rounded-lg text-blue-600{% endif %}">
+                        <span class="tooltiptext">Groups</span>
                         <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
                         </svg>
                     </a>
-                    <a href="{% url 'profile' %}" class="inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg {% if request.resolver_match.url_name == 'profile' %} bg-white rounded-lg text-blue-600{% endif %}">
-                        <span class="sr-only">Settings</span>
+                    <a href="{% url 'profile' %}" class="tooltip inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg {% if request.resolver_match.url_name == 'profile' %} bg-white rounded-lg text-blue-600{% endif %}">
+                        <span class="tooltiptext">Settings</span>
                         <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                         </svg>
                     </a>
+                    <!-- Create Task -->
+                    <a href="{% url 'create-task' %}" class="tooltip inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
+                        <span class="tooltiptext">Create Task</span>
+                        <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                        </svg>
+                    </a>
+                    <!-- Total Task -->
+                    <a href='{% url "task-list" %}' class="tooltip inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
+                        <span class="tooltiptext">Total Task</span>
+                        <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                        </svg>
+                    </a>
+                    <!-- Completed Task -->
+                    <a href="{% url 'task-list' %}?type=completed" class="tooltip inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
+                        <span class="tooltiptext">Completed Task</span>
+                        <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </a>
+                    <!-- Pending Task -->
+                    <a href="{% url 'task-list' %}?type=pending" class="tooltip inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
+                        <span class="tooltiptext">Pending Task</span>
+                        <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </a>
+                    <!-- In Progress Task -->
+                    <a href="{% url 'task-list' %}?type=in-progress" class="tooltip inline-flex items-center justify-center py-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
+                        <span class="tooltiptext">In Progress Task</span>
+                        <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </a>
                 </nav>
                 <div class="inline-flex items-center justify-center h-20 w-20 border-t border-gray-700">
-                    <button class="p-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
-                        <span class="sr-only">Log out</span>
+                    <button class="tooltip p-3 hover:text-gray-400 hover:bg-gray-700 focus:text-gray-400 focus:bg-gray-700 rounded-lg">
+                        <span class="tooltiptext">Log out</span>
                         <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="h-6 w-6">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
                         </svg>
@@ -113,6 +150,7 @@
                     {% endfor %}
                 </div>
             {% endif %}
+            
             {% block content %}
 
             {% endblock content %}

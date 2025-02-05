@@ -1,0 +1,5 @@
+{% if request.user.groups.all.0.name == "Admin" %}
+    {% include 'admin/admin-dashboard.html' %}
+{% else %}
+    {% include 'dashboard/dashboard.html' %}
+{% endif %}

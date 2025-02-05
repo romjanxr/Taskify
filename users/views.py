@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import get_user_model
+from django.http import HttpResponse
+from django.contrib.auth import get_user_model, logout
 from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView, PasswordResetConfirmView
 from django.contrib.auth.models import Group
-from django.http import HttpResponse
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib import messages
 from django.contrib.auth.decorators import user_passes_test
@@ -81,6 +81,14 @@ class CustomLoginView(LoginView):
 class ChangePassword(PasswordChangeView):
     template_name = 'accounts/password_change.html'
     form_class = CustomPasswordChangeForm
+
+    def form_valid(self, form):
+        """Log out the user after password change and redirect to login with a message."""
+        form.save()
+        logout(self.request)  # Log out the user
+        messages.success(
+            self.request, "Password changed successfully. Please log in again.")
+        return redirect(reverse_lazy('login'))  # Redirect to login page
 
 
 def activate_user(request, user_id, token):
