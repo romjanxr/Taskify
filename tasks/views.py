@@ -174,7 +174,7 @@ def view_task(request):
     type = request.GET.get('type', 'all')
 
     base_query = Task.objects.select_related(
-        'details').prefetch_related('assigned_to')
+        'details').prefetch_related('assigned_to').select_related('project')
 
     if type == 'completed':
         tasks = base_query.filter(status='COMPLETED')

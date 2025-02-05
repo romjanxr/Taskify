@@ -72,8 +72,8 @@
                   </button>
                 </div>
                 <h3 class="font-semibold mb-2">{{task.title}}</h3>
-                <div class="text-sm text-gray-500 mb-3">14-Mar-2024</div>
-                <div class="flex items-center justify-between mb-4">
+                <div class="text-sm text-gray-500 mb-3">{{ task.created_at }}</div>
+                {% comment %} <div class="flex items-center justify-between mb-4">
                   <div class="flex items-center gap-4">
                     <div class="flex items-center gap-1">
                       <svg
@@ -141,17 +141,17 @@
                       CA
                     </div>
                   </div>
-                </div>
+                </div> {% endcomment %}
                 <div class="space-y-2">
-                  <div class="text-sm">test</div>
+                  <div class="text-sm">{{ task.description|truncatechars:45 }}</div>
                   <div class="flex items-center gap-2 text-sm text-gray-500">
-                    <span>14-Mar-2024</span>
+                    <span>{{ task.due_date }}</span>
                     <span class="px-2 py-1 bg-blue-50 text-blue-600 rounded"
-                      >Design</span
+                      >{{task.project.name}}</span
                     >
                   </div>
                 </div>
-                <button
+                {% comment %} <button
                   class="mt-4 text-gray-400 hover:text-gray-600 text-sm flex items-center gap-2"
                 >
                   <svg
@@ -168,7 +168,7 @@
                     />
                   </svg>
                   ADD SUBTASK
-                </button>
+                </button> {% endcomment %}
               </div>
           </div>
         {% endfor %}
