@@ -6,6 +6,7 @@ module.exports = {
     "./**/templates/**/*.html", // Templates inside apps
     "./static/**/*.js", // JavaScript files in the static folder
     "./**/static/**/*.js", // JavaScript files in app-level static folders
+    "./**/templatetags/**/*.py",
   ],
   theme: {
     extend: {

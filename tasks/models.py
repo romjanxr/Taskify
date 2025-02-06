@@ -5,10 +5,13 @@ from cloudinary.models import CloudinaryField
 
 
 class Task(models.Model):
+    PENDING = "PENDING"
+    IN_PROGRESS = "IN_PROGRESS"
+    COMPLETED = "COMPLETED"
     STATUS_CHOICES = [
-        ('PENDING', 'Pending'),
-        ('IN_PROGRESS', 'In Progress'),
-        ('COMPLETED', 'Completed')
+        (PENDING, 'Pending'),
+        (IN_PROGRESS, 'In Progress'),
+        (COMPLETED, 'Completed')
     ]
     project = models.ForeignKey(
         "Project",
@@ -21,7 +24,7 @@ class Task(models.Model):
     description = models.TextField()
     due_date = models.DateField()
     status = models.CharField(
-        max_length=15, choices=STATUS_CHOICES, default="PENDING")
+        max_length=15, choices=STATUS_CHOICES, default=PENDING)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # details
