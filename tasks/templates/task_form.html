@@ -1,38 +1,107 @@
 {% extends base_template %}
 {% block content %}
     <div class='my-8'>
-            <div class="container mx-auto px-6 pb-5">
+        <div class="container mx-auto px-6 pb-5">
             <div class="max-w-2xl mx-auto bg-white rounded-lg shadow-md overflow-hidden">
                 <div class="bg-blue-600 text-white py-4 px-6">
-                    <h2 class="text-2xl font-bold">Add New Task</h2>
-                    <p class="mt-1">Create a new task for your project</p>
+                    <h2 class="text-2xl font-bold">{% if task %}Update Task{% else %}Add New Task{% endif %}</h2>  {# Conditional heading #}
+                    <p class="mt-1">{% if task %}Edit an existing task{% else %}Create a new task for your project{% endif %}</p> {# Conditional description #}
                 </div>
-                <form method="post" class='py-6 px-8'>
+                <form method="post" enctype="multipart/form-data" class='py-6 px-8'>  
                     {% csrf_token %}
                     {{ form.non_field_errors }}
-                    
+
                     {% for field in task_form %}
                         <div class="mb-4">
                             <label for="{{ field.id_for_label }}" class="{{ task_form.label_classes }}">{{ field.label }}</label>
                             {{ field }}
-                            {{ field.errors }}
+                            <span class="text-red-700 italic text-sm">{{ field.errors }}</span>  
                         </div>
                     {% endfor %}
+
                     {% for field in task_detail_form %}
                         <div class="mb-4">
                             <label for="{{ field.id_for_label }}" class="{{ task_detail_form.label_classes }}">{{ field.label }}</label>
                             {{ field }}
-                            {{ field.errors }}
+                            <span class="text-red-700 italic text-sm">{{ field.errors }}</span>  
                         </div>
                     {% endfor %}
-                    
+
+                    <h2 class='text-xl font-medium'>Task Assets</h2>
+                    <div id="asset-forms-container">
+                        {% if task_asset_form %}  {# For Update View (Existing Assets) #}
+                            {% for asset in task.details.assets.all %}
+                                <div class="mb-4 border p-2 rounded">
+                                    <img src="{{ asset.image.url }}" alt="Asset" class="max-w-full h-auto mb-2 rounded">
+                                    <div class="flex items-center justify-between">
+                                        <a href="{{ asset.image.url }}" target="_blank" class="text-blue-500 hover:underline">View Full Size</a>
+
+                                        {# Hidden input field for ALL assets #}
+                                        <input type="hidden" name="asset_id_{{ asset.id }}" value="{{ asset.id }}">
+
+                                        <label for="delete_asset_{{ asset.id }}" class="flex items-center">
+                                            <input type="checkbox" name="delete_asset_{{ asset.id }}" id="delete_asset_{{ asset.id }}" class="mr-2" value="on">  {# Value is now 'on' #}
+                                            Delete
+                                        </label>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+
+                        {% comment %} <div class="mb-4">
+                            <label for="asset-upload" class="bg-blue-500 px-2 py-1 ">Choose Images</label>
+                            <input type="file" name="image" multiple id="asset-upload" class="hidden" onchange="handleFileInputChange(this)">
+                            <div id="file-names"></div>
+                        </div> {% endcomment %}
+                        <div class="mb-6">
+                            <label for="asset-upload" class="flex flex-col items-center justify-center w-full h-32 px-4 transition bg-white border-2 border-gray-300 border-dashed rounded-lg cursor-pointer hover:border-blue-500 hover:bg-gray-50">
+                                <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                    <svg class="w-10 h-10 mb-3 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path>
+                                    </svg>
+                                    <p class="mb-2 text-sm text-gray-500"><span class="font-semibold">Click to upload</span></p>
+                                    <p class="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                                </div>
+                            </label>
+                            <input type="file" name="image" multiple id="asset-upload" class="hidden" onchange="handleFileInputChange(this)">
+                            <div id="file-names" class="mt-2 text-sm text-gray-600"></div>
+                        </div>
+                    </div>
+
                     <div class="flex items-center justify-between">
-                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 transition duration-300">Add Task</button>
-                        <button type="button" class="text-gray-600 hover:text-gray-800">Cancel</button>
+                        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-600 transition duration-300">{% if task %}Update Task{% else %}Add Task{% endif %}</button>  {
                     </div>
                 </form>
             </div>
         </div>
     </div>
-{% endblock content %}
 
+    <script>
+        function handleFileInputChange(input) {
+            const fileNamesDiv = document.getElementById('file-names');
+            fileNamesDiv.innerHTML = ''; // Clear previous names
+    
+            if (input.files && input.files.length > 0) {
+                for (const file of input.files) {
+                    const fileNameSpan = document.createElement('span');
+                    fileNameSpan.textContent = file.name + ', ';
+                    fileNamesDiv.appendChild(fileNameSpan);
+    
+                    // Image Preview (New)
+                    if (file.type.startsWith('image/')) { // Check if it's an image
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            const img = document.createElement('img');
+                            img.src = e.target.result;
+                            img.style.maxWidth = '100px'; // Adjust size as needed
+                            img.style.maxHeight = '100px';
+                            fileNamesDiv.appendChild(img); // Append preview next to filename
+                        }
+                        reader.readAsDataURL(file);
+                    }
+                }
+                fileNamesDiv.textContent = fileNamesDiv.textContent.slice(0, -2); // Remove last comma and space
+            }
+        }
+    </script>
+{% endblock content %}

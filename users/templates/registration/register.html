@@ -14,7 +14,7 @@
                     <div class="mb-4">
                         <label for="{{ field.id_for_label }}" class="{{ form.label_classes }}">{{ field.label }}</label>
                         {{ field }}
-                        {{ field.errors }}
+                        <span class="text-red-700 italic text-sm">{{ field.errors }}</span>
                     </div>
                 {% endfor %}
                 
@@ -34,6 +34,7 @@
         
             <div class="bg-gray-100 py-4 px-8 text-center">
                 <p class="text-sm text-gray-600">Already have an account? <a href="{% url 'login' %}" class="text-blue-600 hover:underline">Log in</a></p>
+                
             </div>
         </div>
     </div>

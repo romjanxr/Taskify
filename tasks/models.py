@@ -1,5 +1,7 @@
+import cloudinary.uploader
 from django.db import models
 from django.conf import settings
+from cloudinary.models import CloudinaryField
 
 
 class Task(models.Model):
@@ -48,6 +50,16 @@ class TaskDetail(models.Model):
 
     def __str__(self):
         return f"Details form Task {self.task.title}"
+
+
+class TaskAsset(models.Model):
+    task_detail = models.ForeignKey(
+        TaskDetail, on_delete=models.CASCADE, related_name='assets')
+    image = CloudinaryField(blank=True, null=True)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Asset for {self.task_detail.task.title}"
 
 
 class Project(models.Model):

@@ -183,9 +183,8 @@ def group_list(request):
 
 def user_list(request):
     users = User.objects.prefetch_related(
-        Prefetch('groups', queryset=Group.objects.all(),
-                 to_attr='all_groups')
-    ).all()
+        Prefetch('groups', queryset=Group.objects.values_list(
+            'name', flat=True)).all())
 
     for user in users:
         if user.all_groups:
@@ -198,9 +197,9 @@ def user_list(request):
 
 class CustomPasswordResetView(PasswordResetView):
     form_class = CustomPasswordResetForm
-    template_name = 'registration/reset_password.html'
-    success_url = reverse_lazy('sign-in')
-    html_email_template_name = 'registration/reset_email.html'
+    template_name = 'registration/reset_password_form.html'
+    success_url = reverse_lazy('login')
+    html_email_template_name = 'registration/reset_password_email.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -217,8 +216,8 @@ class CustomPasswordResetView(PasswordResetView):
 
 class CustomPasswordResetConfirmView(PasswordResetConfirmView):
     form_class = CustomPasswordResetConfirmForm
-    template_name = 'registration/reset_password.html'
-    success_url = reverse_lazy('sign-in')
+    template_name = 'registration/reset_password_form.html'
+    success_url = reverse_lazy('login')
 
     def form_valid(self, form):
         messages.success(

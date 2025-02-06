@@ -1,0 +1,152 @@
+{% extends base_template %}
+{% load file_filters %}  {# Loadinf custom filters #}
+{% block title %}{{task.title}} Details{% endblock title %}
+{% block dash-title %} - {{task.title}} Details{% endblock dash-title %}
+{% block content %}
+    <div class="flex min-h-screen">
+      <!-- Main Content -->
+      <div class="flex-1 flex flex-col">
+        <!-- Content -->
+        <main class="flex-1 p-6">
+            <div class="mb-6 flex justify-between items-center">
+                <div>
+                    <form method='post'>
+                        {% csrf_token %}
+                        <select
+                            name="task_status"
+                            id="task_status"
+                            class="px-4 py-2 border rounded-md"
+                        >
+                            {% for value, label in status_choices %}
+                                <option value="{{ value }}" {% if value == task.status %}selected{% endif %}>{{ label }}</option>
+                            {% endfor %}
+                        </select>
+                        <button
+                            class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                            type="submit"
+                        >
+                            Change Status
+                        </button>
+                    </form>
+                </div>            
+                <div>
+                    <a href='{% url "update-task" task.id %}' class="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">Edit</a>
+                    <a href='{% url "delete-task" task.id %}' class="bg-red-500 text-white px-4 py-2 rounded-md">Delete</a>
+                </div>
+            </div>
+
+          <div class="grid gap-6 md:grid-cols-3">
+            <div class="md:col-span-2">
+              <div class="bg-white rounded-lg shadow p-6">
+                <h1 class="text-2xl font-semibold text-gray-900 mb-4">{{ task.title }}</h1>
+                <div class="mb-6 flex items-center gap-3">
+                  <span
+                    class="px-2 py-1 bg-blue-100 text-blue-600 rounded-full text-sm font-medium"
+                    >{{ task.details.get_priority_display|upper }} PRIORITY</span
+                  >
+                  <span
+                    class="px-2 py-1 bg-green-100 text-green-600 rounded-full text-sm font-medium"
+                    >{{task.status}}</span
+                  >
+                </div>
+
+                <div class="mb-6 text-sm text-gray-500">
+                  Created At: {{task.created_at}}
+                </div>
+
+                <div class="mb-6 flex gap-6 text-sm">
+                  <div class="flex items-center gap-2">
+                    <span class="font-medium">Assets:</span>
+                    <span>{{task.details.assets.all|length}}</span>
+                  </div>
+                  {% comment %} <div class="flex items-center gap-2">
+                    <span class="font-medium">Sub-Task:</span>
+                    <span>2</span>
+                  </div> {% endcomment %}
+                </div>
+
+                <div class="mb-6">
+                  <h2 class="mb-4 text-lg font-semibold">TASK TEAM</h2>
+                  <div class="space-y-4">
+                    {% for emp in task.assigned_to.all %}
+                        <div class="flex items-center gap-3">
+                        <img src="{{emp.profile_image.url}}" alt="{{emp.get_full_name}}" class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white">                        
+                        <div>
+                            <div class="font-medium">{{emp.get_full_name|default:"No Name Set"}}</div>
+                            <div class="text-sm text-gray-500">{{emp.groups.first.name|default:"No Role"}}</div>
+                        </div>
+                        </div>
+                    {% endfor %}
+                  </div>
+                </div>
+                
+                {% comment %} <div>
+                  <h2 class="mb-4 text-lg font-semibold">SUB-TASKS</h2>
+                  <div class="space-y-4">
+                    <div class="rounded-lg border p-4">
+                      <div class="mb-2 flex items-center gap-2">
+                        <div class="h-2 w-2 rounded-full bg-blue-600"></div>
+                        <span class="text-sm">Thu Mar 14 2024</span>
+                        <span
+                          class="px-2 py-1 bg-blue-100 text-blue-600 rounded-full text-xs"
+                          >design</span
+                        >
+                        <span
+                          class="px-2 py-1 bg-amber-100 text-amber-600 rounded-full text-xs"
+                          >in progress</span
+                        >
+                      </div>
+                      <div class="mb-2">test</div>
+                      <button class="text-sm text-gray-500 hover:text-gray-700">
+                        Mark as Done
+                      </button>
+                    </div>
+
+                    <div class="rounded-lg border p-4">
+                      <div class="mb-2 flex items-center gap-2">
+                        <div class="h-2 w-2 rounded-full bg-green-600"></div>
+                        <span class="text-sm">Sat Mar 23 2024</span>
+                        <span
+                          class="px-2 py-1 bg-purple-100 text-purple-600 rounded-full text-xs"
+                          >bug fix</span
+                        >
+                        <span
+                          class="px-2 py-1 bg-green-100 text-green-600 rounded-full text-xs"
+                          >done</span
+                        >
+                      </div>
+                      <div class="mb-2">
+                        Fixing bugs in MERN Task Manager App
+                      </div>
+                      <button class="text-sm text-gray-500 hover:text-gray-700">
+                        Mark as Undone
+                      </button>
+                    </div>
+                  </div>
+                </div> {% endcomment %}
+              </div>
+            </div>
+
+            <div class="md:col-span-1">
+              <div class="space-y-6">
+                <div class="bg-white rounded-lg shadow p-6">
+                  <h2 class="mb-4 text-lg font-semibold">TASK DESCRIPTION</h2>
+                  <p class="text-gray-600">
+                   {{task.description}}
+                  </p>
+                </div>
+                <div class="bg-white rounded-lg shadow p-6">
+                    <h2 class="mb-4 text-lg font-semibold">ASSETS</h2>
+                    <div class="space-y-4">
+                        {% for asset in task.details.assets.all %}
+                            <img src="{{ asset.image.url }}" alt="Asset" class="w-full rounded-lg border">  {# Use asset.image.url directly #}
+                        {% endfor %}
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+{% endblock content %}
