@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Prefetch
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Group
 from django.contrib.auth.decorators import user_passes_test, login_required, permission_required
 from django.utils.decorators import method_decorator
 from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
@@ -198,7 +199,7 @@ def view_task(request):
     type = request.GET.get('type', 'all')
 
     base_query = Task.objects.select_related(
-        'details').prefetch_related('assigned_to').select_related('project')
+        'details').prefetch_related('assigned_to', 'details__assets').select_related('project')
 
     if type == 'completed':
         tasks = base_query.filter(status='COMPLETED')
@@ -231,7 +232,15 @@ class TaskDetail(DetailView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.select_related('details').prefetch_related('details__assets', 'assigned_to__groups')
+
+        return queryset.select_related('details').prefetch_related(
+            'details__assets',
+            Prefetch(
+                'assigned_to__groups',
+                queryset=Group.objects.all(),  # Ensures a single optimized query for groups
+                to_attr='prefetched_groups'  # Stores results in a custom attribute
+            )
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

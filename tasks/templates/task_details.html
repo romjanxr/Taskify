@@ -69,13 +69,15 @@
                   <h2 class="mb-4 text-lg font-semibold">TASK TEAM</h2>
                   <div class="space-y-4">
                     {% for emp in task.assigned_to.all %}
-                        <div class="flex items-center gap-3">
-                        <img src="{{emp.profile_image.url}}" alt="{{emp.get_full_name}}" class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white">                        
-                        <div>
-                            <div class="font-medium">{{emp.get_full_name|default:"No Name Set"}}</div>
-                            <div class="text-sm text-gray-500">{{emp.groups.first.name|default:"No Role"}}</div>
-                        </div>
-                        </div>
+                    {% with emp.prefetched_groups.0 as user_group %}
+                    <div class="flex items-center gap-3">
+                            <img src="{{emp.profile_image.url}}" alt="{{emp.get_full_name}}" class="w-12 h-12 bg-blue-600 rounded-full flex items-center justify-center text-white">                        
+                            <div>
+                                <div class="font-medium">{{emp.get_full_name|default:"No Name Set"}}</div>
+                                <div class="text-sm text-gray-500">{{user_group.name|default:"No Role"}}</div>
+                            </div>
+                            </div>
+                        {% endwith %}
                     {% endfor %}
                   </div>
                 </div>
