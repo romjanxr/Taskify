@@ -73,9 +73,19 @@
                 </div>
                 <h3 class="font-semibold mb-2">{{task.title}}</h3>
                 <div class="text-sm text-gray-500 mb-3">{{ task.created_at }}</div>
-                {% comment %} <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center justify-between mb-4">
                   <div class="flex items-center gap-4">
-                    <div class="flex items-center gap-1">
+                    <div class="flex -space-x-2">
+                      {% for emp in task.assigned_to.all %}
+                      <div
+                        class="w-6 h-6 rounded-full {% cycle 'bg-blue-500' 'bg-yellow-500' 'bg-indigo-500' 'bg-red-500' %} text-white text-xs flex items-center justify-center"
+                      >
+                      {{ emp.first_name|slice:":1" }}
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  {% comment %} <div class="flex items-center gap-1">
                       <svg
                         class="w-4 h-4 text-gray-400"
                         fill="none"
@@ -90,7 +100,7 @@
                         />
                       </svg>
                       <span class="text-sm text-gray-500">76</span>
-                    </div>
+                    </div> {% endcomment %}
                     <div class="flex items-center gap-1">
                       <svg
                         class="w-4 h-4 text-gray-400"
@@ -107,7 +117,7 @@
                       </svg>
                       <span class="text-sm text-gray-500">3</span>
                     </div>
-                    <div class="flex items-center gap-1">
+                    {% comment %} <div class="flex items-center gap-1">
                       <svg
                         class="w-4 h-4 text-gray-400"
                         fill="none"
@@ -122,26 +132,9 @@
                         />
                       </svg>
                       <span class="text-sm text-gray-500">1/2</span>
-                    </div>
-                  </div>
-                  <div class="flex -space-x-2">
-                    <div
-                      class="w-6 h-6 rounded-full bg-red-500 text-white text-xs flex items-center justify-center"
-                    >
-                      B
-                    </div>
-                    <div
-                      class="w-6 h-6 rounded-full bg-yellow-500 text-white text-xs flex items-center justify-center"
-                    >
-                      JS
-                    </div>
-                    <div
-                      class="w-6 h-6 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center"
-                    >
-                      CA
-                    </div>
-                  </div>
-                </div> {% endcomment %}
+                    </div> {% endcomment %}
+                  
+                </div>
                 <div class="space-y-2">
                   <div class="text-sm">{{ task.description|truncatechars:45 }}</div>
                   <div class="flex items-center gap-2 text-sm text-gray-500">

@@ -11,7 +11,6 @@ from django.views.generic import UpdateView, TemplateView
 from django.urls import reverse_lazy
 from tasks.models import Task
 from users.forms import RegistrationForm, LoginForm, AssignRoleForm, CreateGroupForm, CustomPasswordChangeForm, EditProfileForm, CustomPasswordResetConfirmForm, CustomPasswordResetForm
-import cloudinary
 
 User = get_user_model()
 
@@ -26,9 +25,6 @@ class EditProfileView(UpdateView):
         return self.request.user
 
     def form_valid(self, form):
-        # Check if request.FILES contains profile_image
-        print("Cloudinary Config:", cloudinary.config().api_key)
-
         self.object = form.save()  # Save the form
         return redirect('profile')
 
