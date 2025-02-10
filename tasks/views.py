@@ -111,7 +111,6 @@ class CreateTask(ContextMixin, LoginRequiredMixin, PermissionRequiredMixin, View
         context = self.get_context_data(
             # Pass forms back to the template
             task_form=task_form, task_detail_form=task_detail_form, task_asset_form=task_asset_form)
-        # or display individual errors
         messages.error(request, "There were errors in the form.")
         return render(request, self.template_name, context)
 
