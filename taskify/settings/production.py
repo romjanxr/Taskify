@@ -4,25 +4,6 @@ import cloudinary.uploader
 import cloudinary.api
 
 DEBUG = False
-# ALLOWED_HOSTS = config("ALLOWED_HOSTS", cast=lambda v: [
-#                        s.strip() for s in v.split(",")])
-ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app"]
-
-INSTALLED_APPS += [
-    'cloudinary',
-    'cloudinary_storage',
-]
-
-
-# Cloudinary Configuration For Serving Media Files
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': config('CLOUD_NAME'),
-    'API_KEY': config('API_KEY'),
-    'API_SECRET': config('API_SECRET')
-}
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-MEDIA_URL = f'https://res.cloudinary.com/{config('CLOUD_NAME')}/'
 
 # Whitenoise for Static Files
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'

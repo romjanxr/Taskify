@@ -1,10 +1,8 @@
-{% extends "dashboard/dashboard.html" %}
+{% extends base_template %}
 {% block dash-title %} - Tasks {% endblock dash-title %}
 {% block content %}
   {% comment %} Main Content  {% endcomment %}
-  <div class="flex-1 flex flex-col">
-    {% comment %} Content {% endcomment %}
-
+  <div class="flex-1 flex flex-col p-8">
       {% comment %} Task Columns {% endcomment %}
       <div class="grid grid-cols-3 gap-6">
         {% for task in tasks %}
@@ -23,8 +21,8 @@
                 </div>
                 <h2 class="font-semibold">{{task.status}}</h2>
               </div>
-              <button
-                class="w-6 h-6 rounded-full hover:bg-gray-100 flex items-center justify-center"
+              <div
+                class="w-6 h-6 rounded-ful flex items-center justify-center"
               >
                 <svg
                   class="w-4 h-4"
@@ -39,7 +37,7 @@
                     d="M12 6v6m0 0v6m0-6h6m-6 0H6"
                   />
                 </svg>
-              </button>
+              </div>
             </div>
 
             {% comment %} Task Card {% endcomment %}
@@ -71,11 +69,23 @@
                     </svg>
                   </button>
                 </div>
-                <h3 class="font-semibold mb-2">{{task.title}}</h3>
-                <div class="text-sm text-gray-500 mb-3">14-Mar-2024</div>
+                <a href="{% url 'view-task-detail' task.id %}">
+                  <h3 class="font-semibold mb-2 hover:text-blue-900">{{task.title}}</h3>
+                </a>
+                <div class="text-sm text-gray-500 mb-3">{{ task.created_at }}</div>
                 <div class="flex items-center justify-between mb-4">
                   <div class="flex items-center gap-4">
-                    <div class="flex items-center gap-1">
+                    <div class="flex -space-x-2">
+                      {% for emp in task.assigned_to.all %}
+                      <div
+                        class="w-6 h-6 rounded-full {% cycle 'bg-blue-500' 'bg-yellow-500' 'bg-indigo-500' 'bg-red-500' %} text-white text-xs flex items-center justify-center"
+                      >
+                      {{ emp.first_name|slice:":1" }}
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                  {% comment %} <div class="flex items-center gap-1">
                       <svg
                         class="w-4 h-4 text-gray-400"
                         fill="none"
@@ -90,7 +100,7 @@
                         />
                       </svg>
                       <span class="text-sm text-gray-500">76</span>
-                    </div>
+                    </div> {% endcomment %}
                     <div class="flex items-center gap-1">
                       <svg
                         class="w-4 h-4 text-gray-400"
@@ -105,9 +115,9 @@
                           d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13"
                         />
                       </svg>
-                      <span class="text-sm text-gray-500">3</span>
+                      <span class="text-sm text-gray-500">{{task.details.assets.all|length}}</span>
                     </div>
-                    <div class="flex items-center gap-1">
+                    {% comment %} <div class="flex items-center gap-1">
                       <svg
                         class="w-4 h-4 text-gray-400"
                         fill="none"
@@ -122,36 +132,19 @@
                         />
                       </svg>
                       <span class="text-sm text-gray-500">1/2</span>
-                    </div>
-                  </div>
-                  <div class="flex -space-x-2">
-                    <div
-                      class="w-6 h-6 rounded-full bg-red-500 text-white text-xs flex items-center justify-center"
-                    >
-                      B
-                    </div>
-                    <div
-                      class="w-6 h-6 rounded-full bg-yellow-500 text-white text-xs flex items-center justify-center"
-                    >
-                      JS
-                    </div>
-                    <div
-                      class="w-6 h-6 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center"
-                    >
-                      CA
-                    </div>
-                  </div>
+                    </div> {% endcomment %}
+                  
                 </div>
                 <div class="space-y-2">
-                  <div class="text-sm">test</div>
+                  <div class="text-sm">{{ task.description|truncatechars:45 }}</div>
                   <div class="flex items-center gap-2 text-sm text-gray-500">
-                    <span>14-Mar-2024</span>
+                    <span>{{ task.due_date }}</span>
                     <span class="px-2 py-1 bg-blue-50 text-blue-600 rounded"
-                      >Design</span
+                      >{{task.project.name}}</span
                     >
                   </div>
                 </div>
-                <button
+                {% comment %} <button
                   class="mt-4 text-gray-400 hover:text-gray-600 text-sm flex items-center gap-2"
                 >
                   <svg
@@ -168,7 +161,7 @@
                     />
                   </svg>
                   ADD SUBTASK
-                </button>
+                </button> {% endcomment %}
               </div>
           </div>
         {% endfor %}

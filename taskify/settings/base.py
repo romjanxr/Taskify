@@ -1,5 +1,6 @@
 from pathlib import Path
 from decouple import config
+import cloudinary
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
@@ -7,6 +8,7 @@ SECRET_KEY = config("SECRET_KEY")
 
 DEBUG = False  # Default value; override in specific environments
 
+ALLOWED_HOSTS = ["127.0.0.1", ".vercel.app"]
 AUTH_USER_MODEL = "users.CustomUser"
 
 # Installed Apps
@@ -17,6 +19,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    'cloudinary',
+    'cloudinary_storage',
     "tasks",
     "users",
     "core",
@@ -75,7 +79,25 @@ USE_TZ = True
 STATIC_URL = "static/"
 STATIC_ROOT = BASE_DIR / "staticfiles"
 
+# Cloudinary Configuration For Serving Media Files
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': config('CLOUD_NAME'),
+    'API_KEY': config('API_KEY'),
+    'API_SECRET': config('API_SECRET')
+}
+
+
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+MEDIA_URL = f'https://res.cloudinary.com/{config('CLOUD_NAME')}/'
 MEDIA_ROOT = BASE_DIR / "media"
+
+cloudinary.config(
+    cloud_name=config('CLOUD_NAME'),
+    api_key=config('API_KEY'),
+    api_secret=config('API_SECRET')
+)
+
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 

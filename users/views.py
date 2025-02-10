@@ -1,17 +1,50 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import logout, get_user_model
-from django.contrib.auth.views import LoginView, PasswordChangeView
-from django.contrib.auth.models import Group, Permission
 from django.http import HttpResponse
+from django.contrib.auth import get_user_model, logout
+from django.contrib.auth.views import LoginView, PasswordChangeView, PasswordResetView, PasswordResetConfirmView
+from django.contrib.auth.models import Group
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib import messages
-from django.contrib.auth.decorators import user_passes_test, login_required
-from django.db.models import Prefetch
-from django.db.models import Q, Count
+from django.contrib.auth.decorators import user_passes_test
+from django.db.models import Prefetch, Q, Count
+from django.views.generic import UpdateView, TemplateView
+from django.urls import reverse_lazy
 from tasks.models import Task
-from users.forms import RegistrationForm, LoginForm, AssignRoleForm, CreateGroupForm, CustomPasswordChangeForm
+from users.forms import RegistrationForm, LoginForm, AssignRoleForm, CreateGroupForm, CustomPasswordChangeForm, EditProfileForm, CustomPasswordResetConfirmForm, CustomPasswordResetForm
 
 User = get_user_model()
+
+
+class EditProfileView(UpdateView):
+    model = User
+    form_class = EditProfileForm
+    template_name = 'accounts/update_profile.html'
+    context_object_name = 'form'
+
+    def get_object(self):
+        return self.request.user
+
+    def form_valid(self, form):
+        self.object = form.save()  # Save the form
+        return redirect('profile')
+
+
+class ProfileView(TemplateView):
+    template_name = 'accounts/profile.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user = self.request.user
+
+        context['username'] = user.username
+        context['email'] = user.email
+        context['name'] = user.get_full_name()
+        context['bio'] = user.bio
+        context['profile_image'] = user.profile_image
+
+        context['member_since'] = user.date_joined
+        context['last_login'] = user.last_login
+        return context
 
 
 def register_user(request):
@@ -45,6 +78,14 @@ class ChangePassword(PasswordChangeView):
     template_name = 'accounts/password_change.html'
     form_class = CustomPasswordChangeForm
 
+    def form_valid(self, form):
+        """Log out the user after password change and redirect to login with a message."""
+        form.save()
+        logout(self.request)  # Log out the user
+        messages.success(
+            self.request, "Password changed successfully. Please log in again.")
+        return redirect(reverse_lazy('login'))  # Redirect to login page
+
 
 def activate_user(request, user_id, token):
     try:
@@ -61,7 +102,6 @@ def activate_user(request, user_id, token):
 
 
 def is_admin(user):
-    # Ensures only staff users (admins) can access the view
     return user.groups.filter(name='Admin').exists()
 
 
@@ -136,15 +176,19 @@ def create_group(request):
 
 @user_passes_test(is_admin, login_url='no-permission')
 def group_list(request):
-    groups = Group.objects.prefetch_related('permissions').all()
+    groups = Group.objects.prefetch_related(
+        'permissions').annotate(user_count=Count('user')).all()
     return render(request, 'admin/group_list.html', {'groups': groups})
 
 
 def user_list(request):
     users = User.objects.prefetch_related(
-        Prefetch('groups', queryset=Group.objects.all(),
-                 to_attr='all_groups')
-    ).all()
+        Prefetch(
+            'groups',
+            queryset=Group.objects.all(),  # Fetch full Group objects
+            to_attr='all_groups'  # Store prefetched groups in an attribute
+        )
+    )
 
     for user in users:
         if user.all_groups:
@@ -153,3 +197,33 @@ def user_list(request):
             user.group_name = 'No Group Assigned'
 
     return render(request, 'admin/userlist.html', {'users': users})
+
+
+class CustomPasswordResetView(PasswordResetView):
+    form_class = CustomPasswordResetForm
+    template_name = 'registration/reset_password_form.html'
+    success_url = reverse_lazy('login')
+    html_email_template_name = 'registration/reset_password_email.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['protocol'] = 'https' if self.request.is_secure() else 'http'
+        context['domain'] = self.request.get_host()
+        print(context)
+        return context
+
+    def form_valid(self, form):
+        messages.success(
+            self.request, 'A Reset email sent. Please check your email')
+        return super().form_valid(form)
+
+
+class CustomPasswordResetConfirmView(PasswordResetConfirmView):
+    form_class = CustomPasswordResetConfirmForm
+    template_name = 'registration/reset_password_form.html'
+    success_url = reverse_lazy('login')
+
+    def form_valid(self, form):
+        messages.success(
+            self.request, 'Password reset successfully')
+        return super().form_valid(form)

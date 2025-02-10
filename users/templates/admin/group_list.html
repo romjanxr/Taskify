@@ -1,33 +1,97 @@
 {% extends "admin/admin-dashboard.html" %}
 {% block title %}Dashboard - Group List{% endblock title %}
 {% block content %}
-<div class="w-2/3 mx-auto my-8">
-    <h2 class="text-2xl font-bold mb-4">Groups and Permissions</h2>
-    <div class="overflow-x-auto">
-        <table class="table-auto w-full border-collapse border border-gray-300">
-            <thead>
-                <tr class="bg-gray-100">
-                    <th class="border border-gray-300 px-4 py-2">Group Name</th>
-                    <th class="border border-gray-300 px-4 py-2">Permissions</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for group in groups %}
-                <tr class="odd:bg-white even:bg-gray-50">
-                    <td class="border border-gray-300 px-4 py-2 font-medium">{{ group.name }}</td>
-                    <td class="border border-gray-300 px-4 py-2">
-                        <ul class="list-disc list-inside">
-                            {% for permission in group.permissions.all %}
-                            <li>{{ permission.name }}</li>
-                            {% empty %}
-                            <span class="text-gray-500 italic">No permissions assigned</span>
-                            {% endfor %}
-                        </ul>
-                    </td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    </div>
-</div>
-{% endblock %}
+    <main class="p-6 sm:p-10 space-y-6">
+        <div class="flex flex-col space-y-6 md:space-y-0 md:flex-row justify-between">
+            <div class="mr-6">
+                <h1 class="text-4xl font-semibold mb-2">Role Management</h1>
+                <h2 class="text-gray-600 ml-0.5">Manage and create roles</h2>
+            </div>
+            <div class="flex flex-wrap items-start justify-end -mb-3">
+                <a href='{% url "create-group" %}' class="inline-flex px-5 py-3 text-white bg-blue-600 hover:bg-blue-700 focus:bg-blue-700 rounded-md ml-6 mb-3">
+                    <svg aria-hidden="true" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="flex-shrink-0 h-6 w-6 text-white -ml-1 mr-2">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Create New Role
+                </a>
+            </div>
+        </div>
+        <section class="grid md:grid-cols-1 xl:grid-cols-1 gap-6">
+            <div class="flex-grow items-center p-8 bg-white shadow rounded-lg">
+                <div class="md:px-4 md:py-4 xl:px-6 xl:py-6">
+                    <div class="sm:flex sm:items-center sm:justify-between">
+                        <div class="flex-1 min-w-0">
+                            <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:text-3xl sm:truncate">
+                                Role List
+                            </h2>
+                        </div>
+                        {% comment %} <div class="mt-4 flex sm:mt-0 sm:ml-4">
+                            <input type="text" name="search" id="search" class="shadow-sm focus:ring-blue-500 focus:border-blue-500 block w-full sm:text-sm border-gray-300 rounded-md" placeholder="Search roles...">
+                        </div> {% endcomment %}
+                    </div>
+                </div>
+                <div class="mt-8 flex flex-col">
+                    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                            <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                <table class="min-w-full divide-y divide-gray-200">
+                                    <thead class="bg-gray-50">
+                                        <tr>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Role Name
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Description
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Users
+                                            </th>
+                                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                Actions
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
+                                        {% for group in groups %}
+                                            <tr>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="text-sm font-medium text-gray-900">
+                                                        {{group.name}}
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <div class="text-sm text-gray-500">
+                                                        <ul class="list-disc list-inside">
+                                                            {% if group.name == 'Admin' %}
+                                                            Full System Access
+                                                            {% else %}
+                                                                {% for permission in group.permissions.all %}
+                                                                <li>{{ permission.name }}</li>
+                                                                {% empty %}
+                                                                <span class="text-gray-500">No permissions assigned</span>
+                                                                {% endfor %}
+                                                            {% endif %}
+                                                        </ul>
+                                                    </div>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap">
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                        {{group.user_count}} users
+                                                    </span>
+                                                </td>
+                                                <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                                    <a href="#" class="text-indigo-600 hover:text-indigo-900 mr-3">Edit</a>
+                                                    <a href="#" class="text-red-600 hover:text-red-900">Delete</a>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+{% endblock content %}

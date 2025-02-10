@@ -6,8 +6,8 @@ db.sqlite3
 .env_dev
 
 # Development-specific files
-package-lock.json
-package.json
-tailwind.config.js
-postcss.config.js
-tailwind.css
+# package-lock.json
+# package.json
+# tailwind.config.js
+# postcss.config.js
+# tailwind.css
