@@ -183,8 +183,12 @@ def group_list(request):
 
 def user_list(request):
     users = User.objects.prefetch_related(
-        Prefetch('groups', queryset=Group.objects.values_list(
-            'name', flat=True)).all())
+        Prefetch(
+            'groups',
+            queryset=Group.objects.all(),  # Fetch full Group objects
+            to_attr='all_groups'  # Store prefetched groups in an attribute
+        )
+    )
 
     for user in users:
         if user.all_groups:
