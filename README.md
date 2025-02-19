@@ -33,22 +33,22 @@ Use the following credentials to log in and test the system:
 ### Admin
 
 ```plaintext
-Email: admin@taskify.com
-Password: admin123
+username: testAdmin
+Password: DemoAdmin#43
 ```
 
 ### Manager
 
 ```plaintext
-Email: manager@taskify.com
-Password: manager123
+Email: testManager
+Password: DemoManager#43
 ```
 
 ### Employee
 
 ```plaintext
-Email: employee@taskify.com
-Password: employee123
+Email: testEmployee
+Password: DemoEmployee#43
 ```
 
 ## Installation
