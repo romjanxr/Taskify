@@ -1,0 +1,230 @@
+[
+    {
+        "model": "tasks.project",
+        "pk": 1,
+        "fields": {
+            "name": "Task Management System",
+            "description": "Develop a system for managing tasks efficiently.",
+            "start_date": "2024-01-10"
+        }
+    },
+    {
+        "model": "tasks.project",
+        "pk": 2,
+        "fields": {
+            "name": "E-Commerce Backend",
+            "description": "Build and optimize APIs for an online store.",
+            "start_date": "2024-01-15"
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 1,
+        "fields": {
+            "project": 1,
+            "title": "Design Database Schema",
+            "description": "Create models and relationships for the task management system.",
+            "due_date": "2024-02-10",
+            "status": "PENDING",
+            "assigned_to": [1, 2]
+        }
+    },
+    {
+        "model": "tasks.taskdetail",
+        "pk": 1,
+        "fields": {
+            "task": 1,
+            "priority": "H",
+            "notes": "Use Django ORM best practices."
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 2,
+        "fields": {
+            "project": 1,
+            "title": "Implement User Authentication",
+            "description": "Develop login, signup, and JWT-based authentication.",
+            "due_date": "2024-02-12",
+            "status": "IN_PROGRESS",
+            "assigned_to": [2, 3]
+        }
+    },
+    {
+        "model": "tasks.taskdetail",
+        "pk": 2,
+        "fields": {
+            "task": 2,
+            "priority": "H",
+            "notes": "Ensure security best practices."
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 3,
+        "fields": {
+            "project": 1,
+            "title": "Implement Role-Based Access Control (RBAC)",
+            "description": "Ensure admin, manager, and employee have proper permissions.",
+            "due_date": "2024-02-15",
+            "status": "PENDING",
+            "assigned_to": [1, 4]
+        }
+    },
+    {
+        "model": "tasks.taskdetail",
+        "pk": 3,
+        "fields": {
+            "task": 3,
+            "priority": "H",
+            "notes": "Use Django permissions and groups."
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 4,
+        "fields": {
+            "project": 1,
+            "title": "Optimize Task Query Performance",
+            "description": "Ensure optimized queries for task retrieval and filtering.",
+            "due_date": "2024-02-18",
+            "status": "IN_PROGRESS",
+            "assigned_to": [3]
+        }
+    },
+    {
+        "model": "tasks.taskdetail",
+        "pk": 4,
+        "fields": {
+            "task": 4,
+            "priority": "M",
+            "notes": "Use select_related and prefetch_related."
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 5,
+        "fields": {
+            "project": 1,
+            "title": "Send Email Notifications",
+            "description": "Use Django Signals to notify users upon task assignment.",
+            "due_date": "2024-02-20",
+            "status": "PENDING",
+            "assigned_to": [2]
+        }
+    },
+    {
+        "model": "tasks.taskdetail",
+        "pk": 5,
+        "fields": {
+            "task": 5,
+            "priority": "H",
+            "notes": "Test with different email providers."
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 6,
+        "fields": {
+            "project": 2,
+            "title": "Develop Product API",
+            "description": "Create APIs for managing products in the e-commerce backend.",
+            "due_date": "2024-02-25",
+            "status": "PENDING",
+            "assigned_to": [3, 4]
+        }
+    },
+    {
+        "model": "tasks.taskdetail",
+        "pk": 6,
+        "fields": {
+            "task": 6,
+            "priority": "M",
+            "notes": "Include filtering and pagination."
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 7,
+        "fields": {
+            "project": 2,
+            "title": "Implement Shopping Cart",
+            "description": "Develop cart functionality with add/remove items.",
+            "due_date": "2024-03-01",
+            "status": "PENDING",
+            "assigned_to": [2]
+        }
+    },
+    {
+        "model": "tasks.taskdetail",
+        "pk": 7,
+        "fields": {
+            "task": 7,
+            "priority": "H",
+            "notes": "Ensure real-time updates."
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 8,
+        "fields": {
+            "project": 2,
+            "title": "Implement Order Processing",
+            "description": "Handle checkout, payments, and order confirmations.",
+            "due_date": "2024-03-05",
+            "status": "IN_PROGRESS",
+            "assigned_to": [1]
+        }
+    },
+    {
+        "model": "tasks.taskdetail",
+        "pk": 8,
+        "fields": {
+            "task": 8,
+            "priority": "H",
+            "notes": "Integrate with payment gateways."
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 9,
+        "fields": {
+            "project": 2,
+            "title": "Optimize Database Queries",
+            "description": "Ensure efficient queries for product search and retrieval.",
+            "due_date": "2024-03-08",
+            "status": "PENDING",
+            "assigned_to": [3]
+        }
+    },
+    {
+        "model": "tasks.taskdetail",
+        "pk": 9,
+        "fields": {
+            "task": 9,
+            "priority": "M",
+            "notes": "Use indexing and query profiling."
+        }
+    },
+    {
+        "model": "tasks.task",
+        "pk": 10,
+        "fields": {
+            "project": 2,
+            "title": "Write Unit Tests",
+            "description": "Implement tests for all API endpoints.",
+            "due_date": "2024-03-10",
+            "status": "PENDING",
+            "assigned_to": [4]
+        }
+    },
+    {
+        "model": "tasks.taskdetail",
+        "pk": 10,
+        "fields": {
+            "task": 10,
+            "priority": "H",
+            "notes": "Ensure test coverage above 90%."
+        }
+    }
+]
