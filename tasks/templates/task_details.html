@@ -31,7 +31,10 @@
                 </div>            
                 <div>
                     <a href='{% url "update-task" task.id %}' class="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">Edit</a>
-                    <a href='{% url "delete-task" task.id %}' class="bg-red-500 text-white px-4 py-2 rounded-md">Delete</a>
+                    <form method="post" action="{% url 'delete-task' task.id %}">
+                      {% csrf_token %}
+                      <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-md">Delete</button>
+                  </form>
                 </div>
             </div>
 
