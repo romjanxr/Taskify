@@ -29,7 +29,7 @@
                         </button>
                     </form>
                 </div>            
-                <div>
+                <div class="flex gap-2">
                     <a href='{% url "update-task" task.id %}' class="bg-blue-500 text-white px-4 py-2 rounded-md mr-2">Edit</a>
                     <form method="post" action="{% url 'delete-task' task.id %}">
                       {% csrf_token %}
